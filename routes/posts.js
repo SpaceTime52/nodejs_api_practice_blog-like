@@ -29,6 +29,22 @@ router.post("/posts", async (req, res) => {
   res.json({ message: "게시글을 생성하였습니다." });
 });
 
+router.post("/posts/many", async (req, res) => {
+  for (let i = 0; i < req.body.length; i++) {
+    var { user, password, title, content } = req.body[i];
+
+    await Post.create({
+      user,
+      password,
+      title,
+      content,
+      createdAt: new Date(),
+    });
+  }
+
+  res.json({ message: "게시글을 생성하였습니다." });
+});
+
 // 게시글 상세조회 with GET
 router.get("/posts/:_postId", async (req, res) => {
   const { _postId } = req.params;
