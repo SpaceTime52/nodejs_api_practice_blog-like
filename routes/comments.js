@@ -34,7 +34,7 @@ router.put("/comments/:_commentId", async (req, res) => {
   const { _commentId } = req.params;
   const { password, content } = req.body;
 
-  await c.updateOne(
+  await Comment.updateOne(
     {
       _id: ObjectId(_commentId),
     },
