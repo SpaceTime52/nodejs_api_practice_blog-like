@@ -1,7 +1,10 @@
 const mongoose = require("mongoose"); // 몽구스를 사용하겠다.
 
 const commentSchema = new mongoose.Schema({
-  // 몽구스 스키마를 만든다.
+  _postId: {
+    type: String,
+    required: true,
+  },
   user: {
     type: String,
     required: true,
@@ -12,6 +15,10 @@ const commentSchema = new mongoose.Schema({
   },
   content: {
     type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
     required: true,
   },
 });

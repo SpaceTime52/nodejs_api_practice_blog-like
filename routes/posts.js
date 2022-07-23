@@ -18,7 +18,7 @@ router.get("/posts", async (req, res) => {
 router.post("/posts", async (req, res) => {
   const { user, password, title, content } = req.body;
 
-  const createdPost = await Post.create({
+  await Post.create({
     user,
     password,
     title,
