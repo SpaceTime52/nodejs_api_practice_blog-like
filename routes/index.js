@@ -1,43 +1,59 @@
 const express = require("express");
-const Cart = require("../schemas/cart.js"); // Cart의 DB 모델 스키마 불러옴
-const Goods = require("../schemas/goods.js"); // Goods의 모델 스키마 불러옴
 const router = express.Router();
 
-// Read with GET : 특정 유저의 장바구니 보기
-router.get("/cart", async (req, res) => {
-  const { userId } = req.query; // 쿼리로 userId 받기
-  const cart = await Cart.find({ userId }); // userId의 쿼리정보를 받아 탐색
-  const goodsIds = cart.map((el) => el.goodsId); // user의 카트의 상품번호 리스트
+const Post = require("../schemas/post.js"); // post의 모델 스키마 불러옴
+const Comment = require("../schemas/comment.js"); // comment의 DB 모델 스키마 불러옴
+const Index = require("../schemas/index.js"); // post의 모델 스키마 불러옴
 
-  // 상품번호 리스트에 맞는 상품정보 리스트
-  const goods = await Goods.find({ goodsId: goodsIds });
+// 게시글 작성 with POST
+// router.post("/posts", async (req, res) => {
+//   const { user, password, title, content } = req.body;
 
-  // 반환할 정보
-  const goodsInfo = cart.map((cart_item) => {
-    return {
-      quantity: cart_item.quantity,
-      goods: goods.find((item) => {
-        return item.goodsId === cart_item.goodsId;
-      }),
-    };
-  });
+//   const post = await Post.find();
 
-  res.json({ userId: userId, goodsInfo });
-});
+//   const createdPost = await Post.create({
+//     user,
+//     password,
+//     title,
+//     content,
+//     createdAt: new Date(),
+//   });
 
-// Create with POST
-router.post("/cart/add", async (req, res) => {
-  const { userId, goodsId, quantity } = req.body;
+//   console.log(createdPost);
 
-  const cart = await Cart.find({ userId });
+//   res.json({ message: "게시글을 생성하였습니다." });
+// });
 
-  const createdCart = await Cart.create({
-    userId,
-    goodsId,
-    quantity,
-  });
+// // 게시글 조회 with GET
+// router.get("/posts", async (req, res) => {
+//   /*
 
-  res.json({ cart: createdCart });
-});
+//   */
+//   res.json({ message: "게시글을 생성하였습니다." });
+// });
+
+// // 게시글 상세조회 with GET
+// router.get("/posts/:_postId", async (req, res) => {
+//   /*
+
+//   */
+//   res.json({ message: "게시글을 생성하였습니다." });
+// });
+
+// // 게시글 수정 with PUT
+// router.put("/posts/:_postId", async (req, res) => {
+//   /*
+
+//   */
+//   res.json({ message: "게시글을 수정하였습니다." });
+// });
+
+// // 게시글 삭제 with DELETE
+// router.delete("/posts/:_postId", async (req, res) => {
+//   /*
+
+//   */
+//   res.json({ message: "게시글을 삭제하였습니다." });
+// });
 
 module.exports = router;
