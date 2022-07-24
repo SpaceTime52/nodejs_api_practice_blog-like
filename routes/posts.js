@@ -8,10 +8,19 @@ const Index = require("../schemas/index.js"); // post의 모델 스키마 불러
 
 // 게시글 조회 with GET
 router.get("/posts", async (req, res) => {
-  const posts = await Post.find();
-  console.log(posts);
+  const dataAll = await Post.find();
+  const data = [];
 
-  res.json({ posts });
+  for (let i = 0; i < dataAll.length; i++) {
+    data.push({
+      postId: dataAll[i]._id.toString(),
+      user: dataAll[i].user,
+      title: dataAll[i].title,
+      createdAt: dataAll[i].createdAt,
+    });
+  }
+
+  res.json({ data: data });
 });
 
 // 게시글 작성 with POST
@@ -29,6 +38,7 @@ router.post("/posts", async (req, res) => {
   res.json({ message: "게시글을 생성하였습니다." });
 });
 
+// 게시글 작성 여러개 한꺼번에 with POST
 router.post("/posts/many", async (req, res) => {
   for (let i = 0; i < req.body.length; i++) {
     var { user, password, title, content } = req.body[i];
@@ -52,7 +62,17 @@ router.get("/posts/:_postId", async (req, res) => {
   const posts = await Post.find();
   const filteredPosts = posts.filter((e) => e["_id"].toString() === _postId);
 
-  res.json({ filteredPosts });
+  const data = [
+    {
+      postId: filteredPosts[0]._id.toString(),
+      user: filteredPosts[0].user,
+      title: filteredPosts[0].title,
+      content: filteredPosts[0].content,
+      createdAt: filteredPosts[0].createdAt,
+    },
+  ];
+
+  res.json({ data: data });
 });
 
 // 게시글 수정 with PUT

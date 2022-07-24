@@ -22,6 +22,7 @@ router.post("/comments/:_postId", async (req, res) => {
   res.json({ message: "댓글을 생성하였습니다." });
 });
 
+// 댓글 작성 with POST many
 router.post("/comments/:_postId/many", async (req, res) => {
   const { _postId } = req.params;
 
@@ -43,8 +44,22 @@ router.post("/comments/:_postId/many", async (req, res) => {
 // 댓글 목록 조회 with GET
 router.get("/comments/:_postId", async (req, res) => {
   const { _postId } = req.params;
-  const data = await Comment.find({ _postId });
-  res.json({ data });
+  const allCommentInfo = await Comment.find({ _postId });
+
+  console.log(allCommentInfo);
+
+  const data = [];
+
+  for (let i = 0; i < allCommentInfo.length; i++) {
+    data.push({
+      commentId: allCommentInfo[i]._id.toString(),
+      user: allCommentInfo[i].user,
+      content: allCommentInfo[i].content,
+      createdAt: allCommentInfo[i].createdAt,
+    });
+  }
+
+  res.json({ data: data });
 });
 
 // 댓글 수정 with PUT
