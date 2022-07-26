@@ -4,12 +4,16 @@ const ObjectId = require("mongodb").ObjectID;
 
 const Comment = require("../schemas/comment.js"); // comment의 DB 모델 스키마 불러옴
 const Post = require("../schemas/post.js"); // post의 모델 스키마 불러옴
-const Index = require("../schemas/index.js"); // post의 모델 스키마 불러옴
 
 // 댓글 작성 with POST
-router.post("/comments/:_postId", async (req, res) => {
+router.post("/:_postId", async (req, res) => {
   const { _postId } = req.params;
   const { user, password, content } = req.body;
+
+  const posts = await Post.find({ _id: ObjectId(_postId) });
+  if (!posts.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
 
   await Comment.create({
     _postId,
@@ -23,8 +27,13 @@ router.post("/comments/:_postId", async (req, res) => {
 });
 
 // 댓글 작성 with POST many
-router.post("/comments/:_postId/many", async (req, res) => {
+router.post("/:_postId/many", async (req, res) => {
   const { _postId } = req.params;
+
+  const posts = await Post.find({ _id: ObjectId(_postId) });
+  if (!posts.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
 
   for (let i = 0; i < req.body.length; i++) {
     var { user, password, content } = req.body[i];
@@ -42,13 +51,20 @@ router.post("/comments/:_postId/many", async (req, res) => {
 });
 
 // 댓글 목록 조회 with GET
-router.get("/comments/:_postId", async (req, res) => {
+router.get("/:_postId", async (req, res) => {
   const { _postId } = req.params;
+
+  const posts = await Post.find({ _id: ObjectId(_postId) });
+  if (!posts.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
+
   const allCommentInfo = await Comment.find({ _postId });
-
-  console.log(allCommentInfo);
-
   const data = [];
+
+  if (!posts.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
 
   for (let i = 0; i < allCommentInfo.length; i++) {
     data.push({
@@ -63,9 +79,15 @@ router.get("/comments/:_postId", async (req, res) => {
 });
 
 // 댓글 수정 with PUT
-router.put("/comments/:_commentId", async (req, res) => {
+router.put("/:_commentId", async (req, res) => {
   const { _commentId } = req.params;
   const { password, content } = req.body;
+
+  const comments = await Comment.find({ _id: ObjectId(_commentId) });
+
+  if (!comments.length) {
+    return res.json({ message: "해당 댓글이 없습니다." });
+  }
 
   await Comment.updateOne(
     {
@@ -83,7 +105,7 @@ router.put("/comments/:_commentId", async (req, res) => {
 });
 
 // 게시글 삭제 with DELETE
-router.delete("/comments/:_commentId", async (req, res) => {
+router.delete("/:_commentId", async (req, res) => {
   const { _commentId } = req.params;
   const { password } = req.body;
 

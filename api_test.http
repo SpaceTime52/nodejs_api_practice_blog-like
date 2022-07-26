@@ -1,3 +1,5 @@
+
+### 게시글 작성
 POST http://localhost:3000/api/posts
 Content-Type: application/json
 
@@ -9,14 +11,14 @@ Content-Type: application/json
 }
     
     
-###
+### 게시글 모두 조회
 GET http://localhost:3000/api/posts
 
-###
-GET http://localhost:3000/api/posts/62dcddf7233faa65f772a9a1
+### 특정 게시글 상세 조회
+GET http://localhost:3000/api/posts/62df5a9955d42cabc118c181
 
-###
-PUT http://localhost:3000/api/posts/62dcddf7233faa65f772a9a1
+### 게시글 수정
+PUT http://localhost:3000/api/posts/62df5a9955d42cabc118c181
 Content-Type: application/json
 
 { 
@@ -25,17 +27,17 @@ Content-Type: application/json
     "content": "안녕하세요 content 입니다." 
 }
 
-###
-DELETE http://localhost:3000/api/posts/62dcddf7233faa65f772a9a1
+### 게시글 삭제
+DELETE http://localhost:3000/api/posts/62df5a9955d42cabc118c181
 Content-Type: application/json
 
 { 
-    "password": "1234"
+    "password": "123"
 }	
 
 
-###
-POST http://localhost:3000/api/comments/:62dcddf7233faa65f772a9a1
+### 특정 게시글에 댓글 작성 
+POST http://localhost:3000/api/comments/62df5a9955d42cabc118c181
 Content-Type: application/json
 
 {
@@ -44,11 +46,11 @@ Content-Type: application/json
     "content": "안녕하세요 댓글입니다."
 }
     
-###
-GET http://localhost:3000/api/comments/:62dcddf7233faa65f772a9a1
+### 특정 게시글의 댓글 조회
+GET http://localhost:3000/api/comments/62df5a9955d42cabc118c181
 
-###
-PUT http://localhost:3000/api/comments/62df741814484bd407420d3f
+### 댓글 수정
+PUT http://localhost:3000/api/comments/62df7cf9fd198e16c5972b40
 Content-Type: application/json
 
 { 
@@ -56,8 +58,8 @@ Content-Type: application/json
     "content": "수정된 댓글입니다." 
 }
 
-###
-DELETE http://localhost:3000/api/comments/62df74ac14484bd407420d51
+### 댓글 삭제 
+DELETE http://localhost:3000/api/comments/62df7cf9fd198e16c5972b40
 Content-Type: application/json
 
 { 

@@ -3,11 +3,9 @@ const router = express.Router();
 const ObjectId = require("mongodb").ObjectID;
 
 const Post = require("../schemas/post.js"); // post의 모델 스키마 불러옴
-const Comment = require("../schemas/comment.js"); // comment의 DB 모델 스키마 불러옴
-const Index = require("../schemas/index.js"); // post의 모델 스키마 불러옴
 
 // 게시글 조회 with GET
-router.get("/posts", async (req, res) => {
+router.get("/", async (req, res) => {
   const dataAll = await Post.find();
   const data = [];
 
@@ -24,7 +22,7 @@ router.get("/posts", async (req, res) => {
 });
 
 // 게시글 작성 with POST
-router.post("/posts", async (req, res) => {
+router.post("/", async (req, res) => {
   const { user, password, title, content } = req.body;
 
   await Post.create({
@@ -39,7 +37,7 @@ router.post("/posts", async (req, res) => {
 });
 
 // 게시글 작성 여러개 한꺼번에 with POST
-router.post("/posts/many", async (req, res) => {
+router.post("/many", async (req, res) => {
   for (let i = 0; i < req.body.length; i++) {
     var { user, password, title, content } = req.body[i];
 
@@ -56,8 +54,13 @@ router.post("/posts/many", async (req, res) => {
 });
 
 // 게시글 상세조회 with GET
-router.get("/posts/:_postId", async (req, res) => {
+router.get("/:_postId", async (req, res) => {
   const { _postId } = req.params;
+
+  const thisPost = await Post.find({ _id: ObjectId(_postId) });
+  if (!thisPost.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
 
   const posts = await Post.find();
   const filteredPosts = posts.filter((e) => e["_id"].toString() === _postId);
@@ -76,9 +79,15 @@ router.get("/posts/:_postId", async (req, res) => {
 });
 
 // 게시글 수정 with PUT
-router.put("/posts/:_postId", async (req, res) => {
+router.put("/:_postId", async (req, res) => {
   const { _postId } = req.params;
   const { password, title, content } = req.body;
+
+  const thisPost = await Post.find({ _id: ObjectId(_postId) });
+
+  if (!thisPost.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
 
   await Post.updateOne(
     {
@@ -97,11 +106,17 @@ router.put("/posts/:_postId", async (req, res) => {
 });
 
 // 게시글 삭제 with DELETE
-router.delete("/posts/:_postId", async (req, res) => {
+router.delete("/:_postId", async (req, res) => {
   const { _postId } = req.params;
   const { password } = req.body;
 
   const posts = await Post.find();
+  const thisPost = await Post.find({ _id: ObjectId(_postId) });
+
+  if (!thisPost.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
+
   const filteredPosts = posts.filter((e) => e["_id"].toString() === _postId);
   const db_password = filteredPosts[0]["password"];
 
