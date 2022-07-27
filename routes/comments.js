@@ -5,8 +5,8 @@
 const express = require("express");
 const router = express.Router();
 
-// (ObjectId라는 속성의 객체로 자동 생성되는)
-// 몽고DB의 '_id' 값을 문자열로 바꿔주기 위한 외부 모듈이 필요합니다.
+// (ObjectId라는 속성의 객체로 자동 생성되는) 몽고DB의 '_id' 값을
+// 일반 문자열과 비교하고 서로 호환시키기 위한 외부 모듈이 필요합니다.
 const ObjectId = require("mongodb").ObjectID;
 
 // 이 파일에서 사용할 post와 comment DB가 어떻게 생겼는지 불러옵니다. (schema/comment.js)
@@ -47,32 +47,6 @@ router.post("/:_postId", async (req, res) => {
 });
 
 // ------------------
-// 댓글 작성 with POST many ('/api/comments/_postId/many')
-// 특정 게시글에 벌크로 댓글을 남깁니다. (DB 초기화 위해서 만들어봤어요)
-router.post("/:_postId/many", async (req, res) => {
-  const { _postId } = req.params;
-
-  const posts = await Post.find({ _id: ObjectId(_postId) });
-  if (!posts.length) {
-    return res.json({ message: "해당 게시글이 없습니다." });
-  }
-
-  for (let i = 0; i < req.body.length; i++) {
-    var { user, password, content } = req.body[i];
-
-    await Comment.create({
-      _postId,
-      user,
-      password,
-      content,
-      createdAt: new Date(),
-    });
-  }
-
-  res.json({ message: "댓글을 생성하였습니다." });
-});
-
-// ------------------
 // 댓글 목록 조회 with GET ('/api/comments/_postId')
 router.get("/:_postId", async (req, res) => {
   // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -102,6 +76,32 @@ router.get("/:_postId", async (req, res) => {
 
   // 반환값은 Response json으로 전달
   res.json({ data: data });
+});
+
+// ------------------
+// 댓글 작성 with POST many ('/api/comments/_postId/many')
+// 특정 게시글에 벌크로 댓글을 남깁니다. (DB 초기화 위해서 만들어봤어요)
+router.post("/:_postId/many", async (req, res) => {
+  const { _postId } = req.params;
+
+  const posts = await Post.find({ _id: ObjectId(_postId) });
+  if (!posts.length) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
+
+  for (let i = 0; i < req.body.length; i++) {
+    var { user, password, content } = req.body[i];
+
+    await Comment.create({
+      _postId,
+      user,
+      password,
+      content,
+      createdAt: new Date(),
+    });
+  }
+
+  res.json({ message: "댓글을 생성하였습니다." });
 });
 
 // 댓글 수정 with PUT ('/api/comments/_commentId')

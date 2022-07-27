@@ -19,9 +19,10 @@ const commentSchema = new mongoose.Schema({
     required: true,
   },
   createdAt: {
-    type: Date,
+    type: Date, // 이건 날짜 Date 형태로 받습니다.
     required: true,
   },
 });
 
+// 이로써 comments 관련 DB는, 여기서 만든 몽구스 모델을 기준으로 받겠다고 외부에 선언/공개합니다.
 module.exports = mongoose.model("blog_comments", commentSchema);

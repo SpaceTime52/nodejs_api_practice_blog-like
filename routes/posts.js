@@ -5,8 +5,8 @@
 const express = require("express");
 const router = express.Router();
 
-// (ObjectId라는 속성의 객체로 자동 생성되는)
-// 몽고DB의 '_id' 값을 문자열로 바꿔주기 위한 외부 모듈이 필요합니다.
+// (ObjectId라는 속성의 객체로 자동 생성되는) 몽고DB의 '_id' 값을
+// 일반 문자열과 비교하고 서로 호환시키기 위한 외부 모듈이 필요합니다.
 const ObjectId = require("mongodb").ObjectID;
 
 // 이 파일에서 사용할 post DB가 어떻게 생겼는지 불러옵니다. (schema/post.js)
@@ -53,8 +53,9 @@ router.post("/", async (req, res) => {
   res.json({ message: "게시글을 생성하였습니다." });
 });
 
-// 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
-// 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
+// ------------------
+// // 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
+// // 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
 router.post("/many", async (req, res) => {
   for (let i = 0; i < req.body.length; i++) {
     var { user, password, title, content } = req.body[i];
@@ -74,7 +75,7 @@ router.post("/many", async (req, res) => {
 // ------------------
 // 게시글 상세조회 with GET ('/api/posts/:_postId')
 router.get("/:_postId", async (req, res) => {
-  // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
+  // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
 
   // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
@@ -150,7 +151,6 @@ router.delete("/:_postId", async (req, res) => {
 
   // 입력 받은 _postId와 동일한 요소를 DB에서 찾아냅니다.
   const thisPost = await Post.find({ _id: ObjectId(_postId) });
-
   // 찾은 게 없으면 실패를 Response 하고,
   if (!thisPost.length) {
     return res.json({ message: "해당 게시글이 없습니다." });
@@ -165,7 +165,7 @@ router.delete("/:_postId", async (req, res) => {
   if (password != db_password) {
     res.json({ message: "패스워드가 일치하지 않습니다." });
 
-    // 아니면 내용 종료합니다.
+    // 아니면 내용 삭제합니다.
   } else {
     await Post.deleteOne({
       _id: ObjectId(_postId),
