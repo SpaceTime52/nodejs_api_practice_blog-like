@@ -9,7 +9,7 @@ const router = express.Router();
 // 몽고DB의 '_id' 값을 문자열로 바꿔주기 위한 외부 모듈이 필요합니다.
 const ObjectId = require("mongodb").ObjectID;
 
-// 이 파일에서 사용할 post가 어떻게 생겼는지 불러옵니다. (schema/post.js)
+// 이 파일에서 사용할 post DB가 어떻게 생겼는지 불러옵니다. (schema/post.js)
 const Post = require("../schemas/post.js");
 
 //  ---------------- 여기부터 API 시작 ----------------
