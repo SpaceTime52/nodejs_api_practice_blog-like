@@ -1,6 +1,7 @@
 # nodejs로 간단한 api를 구현하는 것을 해보았습니다.
 
 본 api는 [http://nodeapi.myspaceti.me/api](http://nodeapi.myspaceti.me/api) 에서 아래와 같은 명세로 작동합니다. (https 아님 주의)
+
 [이 파일](https://github.com/SpaceTime52/nodejs_api_practice_blog-like/raw/main/nodejsBasicAPI_structure.pdf)을 확인해주세요.
 
 | 기능             | API URL                    | Method | request(가져 갈 데이터)                                                                                                   | response(서버로부터 받아올 데이터)                                                                                                                                                                                                                                                                                                              |
