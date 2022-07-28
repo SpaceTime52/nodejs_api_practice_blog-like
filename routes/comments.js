@@ -61,8 +61,10 @@ router.get("/:_postId", async (req, res) => {
     return res.json({ message: "해당 게시글이 없습니다." });
   }
 
-  // postId 게시글에 남겨져 있는 댓글을 Comments DB에서 모두 찾아서
-  const allCommentInfo = await Comment.find({ _postId });
+  // postId 게시글에 남겨져 있는 댓글을 Comments DB에서 날짜 내림차순으로 모두 찾아서
+  const allCommentInfo = await Comment.find({ _postId }).sort({
+    createdAt: -1,
+  });
   const data = [];
 
   // 이 게시물의 댓글을 하나씩 돌면서, 응답할 배열에 넣어서 반환합니다.

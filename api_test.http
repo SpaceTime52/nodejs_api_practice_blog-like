@@ -50,7 +50,7 @@ Content-Type: application/json
 GET http://nodeapi.myspaceti.me/api/comments/62de7ccbceb3f499c2d2a7b9
 
 ### 댓글 수정
-PUT http://nodeapi.myspaceti.me/api/comments/62e1f0ff919b8fdbc14d0b24
+PUT http://nodeapi.myspaceti.me/api/comments/62e1f5b2a1f6849c8ed3a65e
 Content-Type: application/json
 
 { 
