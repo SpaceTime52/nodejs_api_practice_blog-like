@@ -1,6 +1,6 @@
 
 ### 게시글 작성 셍성
-POST http://nodeapi.myspaceti.me/api/posts
+POST http://localhost:3000/api/posts
 Content-Type: application/json
 
 {
@@ -12,13 +12,13 @@ Content-Type: application/json
     
     
 ### 게시글 모두 조회 불러오는 (주소창)
-GET http://nodeapi.myspaceti.me/api/posts
+GET http://localhost:3000/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://nodeapi.myspaceti.me/api/posts/62e1f0b0919b8fdbc14d0b13  
+GET http://localhost:3000/api/posts/62e1e6e8e76f26ad11ec912c  
 
 ### 게시글 수정
-PUT http://nodeapi.myspaceti.me/api/posts/62e1f0b0919b8fdbc14d0b13
+PUT http://localhost:3000/api/posts/62e1e70ce76f26ad11ec9134
 Content-Type: application/json
 
 { 
@@ -28,38 +28,38 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE http://nodeapi.myspaceti.me/api/posts/62e1f0b0919b8fdbc14d0b13
+DELETE http://localhost:3000/api/posts/62e1e6e8e76f26ad11ec912c
 Content-Type: application/json
 
 { 
-    "password": "12d34"
+    "password": "12a34"
 }	
 
 
 ### 특정 게시글에 댓글 작성 
-POST http://nodeapi.myspaceti.me/api/comments/62de7ccbceb3f499c2d2a7b9
+POST http://localhost:3000/api/comments/62df792f437fe28248ee021d
 Content-Type: application/json
 
 {
     "user": "Developer",
-    "password": "12345",
+    "password": "1234",
     "content": "ㅇㅋㅇㅋ"
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://nodeapi.myspaceti.me/api/comments/62de7ccbceb3f499c2d2a7b9
+GET http://localhost:3000/api/comments/62df792f437fe28248ee021d
 
 ### 댓글 수정
-PUT http://nodeapi.myspaceti.me/api/comments/62e1f0ff919b8fdbc14d0b24
+PUT http://localhost:3000/api/comments/62e1e99b10eabc058cedf46f
 Content-Type: application/json
 
 { 
-    "password": "12345",
+    "password": "1234",
     "content": "ㅇㅇ" 
 }
 
 ### 댓글 삭제 
-DELETE http://nodeapi.myspaceti.me/api/comments/62e1f465919b8fdbc14d0b38
+DELETE http://localhost:3000/api/comments/62e1e99b10eabc058cedf46f
 Content-Type: application/json
 
 { 

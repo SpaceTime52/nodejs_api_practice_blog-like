@@ -88,9 +88,9 @@ router.put("/:_commentId", async (req, res) => {
   const { password, content } = req.body;
 
   // params 로 입력받은 _commentId에 해당하는 댓글을 찾아서,
-  const comments = await Comment.find({ _id: _commentId });
+  const comments = await Comment.findOne({ _id: _commentId });
   // 해당하는 댓글이 없으면 수정할 수 없습니다~~
-  if (!comments.length) {
+  if (!comments) {
     return res.json({ message: "해당 댓글이 없습니다." });
   }
 
