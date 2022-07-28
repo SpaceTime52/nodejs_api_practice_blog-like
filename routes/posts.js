@@ -15,9 +15,9 @@ const Post = require("../schemas/post.js");
 router.get("/", async (req, res) => {
   // 몽고디비 데이터베이스 상의 'Post'에서 모든 데이터를 createdAt의 내림차순으로 불러온 후,
   const dataAll = await Post.find().sort({ createdAt: -1 });
-
   // data 배열에 하나씩 넣어 줍니다. (push)
   const data = [];
+
   for (let i = 0; i < dataAll.length; i++) {
     data.push({
       postId: dataAll[i]._id.toString(), // 이 때 ObjectId 객체로 불러와진 값은 문자열로 바꿉니다.
@@ -34,7 +34,8 @@ router.get("/", async (req, res) => {
 // TASK 2 : 게시글 작성 with POST ('/api/posts')
 router.post("/", async (req, res) => {
   // POST 요청의 body로 받은 아이들을 각 변수 user, password, title, content에 넣어줍니다.
-  const { user, password, title, content } = req.body;
+
+  const { user, password, title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
 
   // 그 변수들을 Post DB에 create - 생성해줍니다.
   await Post.create({
@@ -42,7 +43,7 @@ router.post("/", async (req, res) => {
     password,
     title,
     content,
-    createdAt: new Date(), // 오늘 날짜, 시간이 자동 생성돼서 넘어가야 하므로 new Date()를 사용합니다.
+    createdAt: new Date(), // 오늘 날짜, 시간이 자동 생성돼서 넘어가야 하므로 new Date()를 사용합니다. '지금 날짜+시간'
   });
 
   // 명세서대로 Response를 반환 해줍니다.
@@ -54,7 +55,6 @@ router.post("/", async (req, res) => {
 router.get("/:_postId", async (req, res) => {
   // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
-
   // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
   const thisPost = await Post.findOne({ _id: _postId });
 
