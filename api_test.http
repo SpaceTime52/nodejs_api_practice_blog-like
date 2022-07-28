@@ -43,7 +43,7 @@ Content-Type: application/json
 {
     "user": "Developer",
     "password": "1234",
-    "content": "안녕하세요 댓글입니다."
+    "content": "ㅇㅋㅇㅋ"
 }
     
 ### 특정 게시글의 댓글 조회
