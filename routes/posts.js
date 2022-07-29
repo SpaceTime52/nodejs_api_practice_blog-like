@@ -4,10 +4,11 @@
 // 이 파일에서 사용할 라우터 객체 생성
 const express = require("express");
 const router = express.Router();
-const { Op } = require("sequelize");
+const Sequelize = require("sequelize");
 
 // models 폴더 안에 있는  Post DB 모델을 가져다 사용합니다.
 const { Post } = require("../models");
+const { User } = require("../models");
 
 // 각 api 접근할 때마다 사용자 인증을 위한 미들웨어 임포트
 const authMiddleware = require("../middlewares/auth-middleware");
@@ -33,6 +34,7 @@ router.get("/", async (req, res) => {
       title: dataAll[i].title,
       createdAt: dataAll[i].createdAt,
       updatedAt: dataAll[i].updatedAt,
+      likes: dataAll[i].likes,
     });
   }
 
@@ -60,6 +62,43 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // ------------------
+// TASK 7 : 내가 좋아한 게시글 조회 ('/api/posts/like)
+router.get("/like", authMiddleware, async (req, res) => {
+  // 변수 정의, 지금까지 user가 좋아한 Posts
+  const { user } = await res.locals;
+
+  console.log(user);
+  const postIdsUserLiked = await User.findOne({
+    where: { userId: user.userId },
+  }).then((e) => e.likedPosts);
+
+  console.log(postIdsUserLiked);
+
+  // 좋아요 할 Post, 지금까지 user가 좋아한 Posts
+  const postsUserLiked = await Post.findAll({
+    where: { _id: postIdsUserLiked },
+    order: [["likes", "DESC"]],
+  });
+
+  // data 배열에 하나씩 넣어 줍니다. (push)
+  const data = [];
+
+  for (let i = 0; i < postsUserLiked.length; i++) {
+    data.push({
+      postId: postsUserLiked[i]._id.toString(), // 이 때 ObjectId 객체로 불러와진 값은 문자열로 바꿉니다.
+      userId: postsUserLiked[i].userId,
+      nickname: postsUserLiked[i].nickname,
+      title: postsUserLiked[i].title,
+      createdAt: postsUserLiked[i].createdAt,
+      updatedAt: postsUserLiked[i].updatedAt,
+      likes: postsUserLiked[i].likes,
+    });
+  }
+
+  res.json({ data: data }); // 값이 다 넣어진 배열을 Response 해줍니다.
+});
+
+// ------------------
 // TASK 3 : 게시글 상세조회 with GET ('/api/posts/:_postId')
 router.get("/:_postId", async (req, res) => {
   // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -82,6 +121,7 @@ router.get("/:_postId", async (req, res) => {
       content: thisPost.content,
       createdAt: thisPost.createdAt,
       updatedAt: thisPost.updatedAt,
+      likes: thisPost.likes,
     },
   ];
 
@@ -172,6 +212,65 @@ router.post("/many", authMiddleware, async (req, res) => {
   }
 
   res.json({ message: "게시글을 생성하였습니다." });
+});
+
+// ------------------
+// TASK 6 : 게시글 좋아요 누르기 ('/api/posts/:_postId/like)
+router.put("/:_postId/like", authMiddleware, async (req, res) => {
+  // 변수 정의
+  const { _postId } = req.params;
+  const { user } = await res.locals;
+
+  // 좋아요 할 Post, 지금까지 user가 좋아한 Posts
+  const postToLike = await Post.findOne({ where: { _id: _postId } });
+
+  if (!postToLike) {
+    return res.json({ message: "해당 게시글이 없습니다." });
+  }
+
+  // User가 지금까지 좋아했던 포스트의 List
+  let postIdsUserLiked = await User.findOne({
+    where: { userId: user.userId },
+  }).then((e) => e.likedPosts);
+  // const postIdsUserLiked = postsUserLiked.likedPosts; // user가 좋아한 Posts id
+
+  // console.log(postIdsUserLiked);
+  // console.log(Array.isArray(postIdsUserLiked));
+  // console.log(postToLike._id);
+
+  // 지금껏 좋아요 한 배열이 이번에 좋아요 누른 값을 가지고 있지 않으면 Like 하나를 올리고 리턴
+  if (!postIdsUserLiked.includes(postToLike._id.toString())) {
+    await Post.update(
+      { likes: Sequelize.literal("likes + 1") }, // like를 하나 올림 (Sequelize문법)
+      { where: { _id: _postId } }
+    );
+
+    postIdsUserLiked.push(_postId);
+    const aSet = new Set(postIdsUserLiked);
+    postIdsUserLiked = Array.from(aSet);
+    console.log(postIdsUserLiked);
+
+    await User.update(
+      { likedPosts: postIdsUserLiked }, // user DB에 하다 더 추가
+      { where: { userId: user.userId } }
+    );
+    res.json({ message: "게시글의 좋아요를 등록하였습니다." });
+
+    // 좋아요 한 배열이 이번에 좋아요 누른 값을 가지고 있지 않으면, 라이크 하나 줄이고 리턴
+  } else {
+    await Post.update(
+      { likes: Sequelize.literal("likes - 1") }, // like를 하나 줄임 (Sequelize문법)
+      { where: { _id: _postId } }
+    );
+
+    let popedArr = postIdsUserLiked.filter((element) => element !== _postId);
+
+    await User.update(
+      { likedPosts: popedArr }, // 기존 좋아했던 배열에서 _postId를 빼어낸다.
+      { where: { userId: user.userId } }
+    );
+    res.json({ message: "게시글의 좋아요를 취소하였습니다." }); // 값이 다 넣어진 배열을 Response 해줍니다.
+  }
 });
 
 // 이 파일의 router 객체를 외부에 공개합니다.

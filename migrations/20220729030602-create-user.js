@@ -16,6 +16,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      likedPosts: {
+        allowNull: false,
+        type: DataTypes.JSON,
+        defaultValue: [],
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
