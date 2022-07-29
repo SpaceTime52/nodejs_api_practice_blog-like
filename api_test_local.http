@@ -4,7 +4,7 @@ POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester4",  
+    "nickname": "Tester5",  
     "password": "12345",  
     "confirm": "12345"
 }
@@ -14,7 +14,7 @@ POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {  
-    "nickname": "Tester4",
+    "nickname": "Tester5",
     "password": "12345"
 }
 
@@ -23,15 +23,16 @@ Content-Type: application/json
 ### TESTER 2 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTA4ODE0M30.H4kbxfRVQNojc0Iiz_Y71j-sxrHOJCT7kcKQz0hT_jo
 ### TESTER 3 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY1OTA4ODY0OX0.q6xr19CUl_WQfy6yBa9aBYFpy6Umx1RHistMVlN_ydU
 ### TESTER 4 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+### TESTER 5 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 
 ### 게시글 작성 셍성 
 POST http://localhost:3000/api/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 {
-    "title": "안녕하세요",
+    "title": "안녕하세요22",
     "content": "이런저런 글입니다24444 안녕히계세요~~"
 }
     
@@ -40,12 +41,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhd
 GET http://localhost:3000/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:3000/api/posts/10
+GET http://localhost:3000/api/posts/13
 
 ### 게시글 수정 
-PUT http://localhost:3000/api/posts/10
+PUT http://localhost:3000/api/posts/13
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 { 
     "title": "안녕하세요3",
@@ -53,31 +54,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhd
 }
 
 ### 게시글 삭제
-DELETE http://localhost:3000/api/posts/10
+DELETE http://localhost:3000/api/posts/14
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
-{ 
-    "password": "12d34"
-}	
 
+#################### Comments ########################
 
 ### 특정 게시글에 댓글 작성   // 사용중인 유저로 진행 필요
-POST http://localhost:3000/api/comments/7
+POST http://localhost:3000/api/comments/12
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 {
     "comment": "안녕하세요 댓글입니다."
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://localhost:3000/api/comments/7
+GET http://localhost:3000/api/comments/12
 
 ### 댓글 수정
-PUT http://localhost:3000/api/comments/7
+PUT http://localhost:3000/api/comments/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 { 
     "comment": "안녕하세요 수정된 댓글입니다."
@@ -85,13 +84,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhd
 
 
 ### 댓글 삭제 
-DELETE http://localhost:3000/api/comments/8
+DELETE http://localhost:3000/api/comments/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 
 ### 게시글 좋아요
-PUT http://localhost:3000/api/posts/9/like
+PUT http://localhost:3000/api/posts/12/like
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
 

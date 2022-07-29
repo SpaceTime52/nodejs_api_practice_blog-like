@@ -1,7 +1,7 @@
 // express 모듈을 불러오고, 보안(CORS),포트 등 환경 초기화
 const express = require("express");
 const cors = require("cors");
-const port = 3000;
+const port = 8000;
 
 // express 객체 선언, 각종 middleware 설치
 const app = express();
