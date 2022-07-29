@@ -38,16 +38,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhd
 GET http://localhost:3000/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:3000/api/posts/6
+GET http://localhost:3000/api/posts/10
 
 ### 게시글 수정 
-PUT http://localhost:3000/api/posts/6
+PUT http://localhost:3000/api/posts/10
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY1OTA3ODMzNn0.vFDvYP2DAIqnRcPD6WyppqXHm72lfgD_PO3-jSV-6Xw
 
 { 
     "title": "안녕하세요3",
-    "comment": "안녕하세요 댓글입니다."
+    "content": "안녕하세요 게시글 수정합니당~."
 }
 
 ### 게시글 삭제
@@ -61,7 +61,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhd
 
 
 ### 특정 게시글에 댓글 작성   // 사용중인 유저로 진행 필요
-POST http://localhost:3000/api/comments/6
+POST http://localhost:3000/api/comments/7
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY1OTA3ODMzNn0.vFDvYP2DAIqnRcPD6WyppqXHm72lfgD_PO3-jSV-6Xw
 
@@ -70,10 +70,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhd
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://localhost:3000/api/comments/6
+GET http://localhost:3000/api/comments/7
 
 ### 댓글 수정
-PUT http://localhost:3000/api/comments/5
+PUT http://localhost:3000/api/comments/6
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY1OTA3ODMzNn0.vFDvYP2DAIqnRcPD6WyppqXHm72lfgD_PO3-jSV-6Xw
 
@@ -82,7 +82,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhd
 }
 
 ### 댓글 삭제 
-DELETE http://localhost:3000/api/comments/5
+DELETE http://localhost:3000/api/comments/6
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY1OTA3ODMzNn0.vFDvYP2DAIqnRcPD6WyppqXHm72lfgD_PO3-jSV-6Xw
 

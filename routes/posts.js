@@ -49,6 +49,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
   // 그 변수들을 Post DB에 create - 생성해줍니다.
   await Post.create({
+    userId: user.userId,
     nickname: user.nickname,
     title,
     content,
@@ -163,6 +164,7 @@ router.post("/many", authMiddleware, async (req, res) => {
     var { title, content } = req.body[i];
 
     await Post.create({
+      userId: user.userId,
       nickname: user.nickname,
       title,
       content,

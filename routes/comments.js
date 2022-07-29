@@ -41,6 +41,7 @@ router.post("/:_postId", authMiddleware, async (req, res) => {
   // 이 comment는 _postId '게시글'에 남겨지는 '댓글'입니다.
   await Comment.create({
     _postId,
+    userId: user.userId,
     nickname: user.nickname,
     comment,
   });
@@ -176,6 +177,7 @@ router.post("/:_postId/many", authMiddleware, async (req, res) => {
 
     await Comment.create({
       _postId,
+      userId: user.userId,
       nickname: user.nickname,
       comment,
     });

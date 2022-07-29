@@ -12,6 +12,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       nickname: {
         allowNull: false,
         type: Sequelize.STRING,
