@@ -33,7 +33,7 @@ const postAuthSchema = Joi.object({
 
 // ------------------
 // TASK 1 : 회원 가입 API with POST  ('/api/signup' POST로 접근 시)
-router.post("/signup", async (req, res) => {
+router.post("/signup", authMiddleware, async (req, res) => {
   // joi 객체의 스키마를 잘 통과했는지 확인
   try {
     const { nickname, password, confirm } = await postUsersSchema.validateAsync(
@@ -84,7 +84,7 @@ router.post("/signup", async (req, res) => {
 
 // ------------------
 // TASK 2 : 게시글 작성 with user ('/api/users')
-router.post("/login", async (req, res) => {
+router.post("/login", authMiddleware, async (req, res) => {
   // joi 객체의 스키마를 잘 통과했는지 확인
   try {
     const { nickname, password } = await postAuthSchema.validateAsync(req.body);

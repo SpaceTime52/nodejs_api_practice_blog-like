@@ -13,7 +13,15 @@ const authMiddleware = (req, res, next) => {
   // 전달받은 인증값이 Bearer가 아니면 반려
   if (authType !== "Bearer") {
     res.status(401).send({
-      errorMessage: "로그인 후 사용하세요",
+      errorMessage: "로그인 후 사용해주세요",
+    });
+    return;
+  }
+
+  // 우리 Bearer 토큰을 전달한 게 맞는데 요청한 pathrk 로그인이나 signup이면,
+  if (req.path.includes("/login") || req.path.includes("/signup")) {
+    res.status(401).send({
+      errorMessage: "이미 로그인이 되어 있습니다.",
     });
     return;
   }
@@ -29,7 +37,7 @@ const authMiddleware = (req, res, next) => {
         // 인증 결과 에러가 나타나면 클라이언트와 서버에 모두 에러를 던지고 미들웨어 종료
         if (error) {
           res.status(401).send({
-            errorMessage: "이용에 문제가 있습니다",
+            errorMessage: "이용에 문제가 있습니다. 관리자에게 문의해주세요.",
           });
           console.error(error);
           return;

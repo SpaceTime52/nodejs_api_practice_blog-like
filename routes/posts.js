@@ -11,17 +11,20 @@ const Post = require("../schemas/post.js");
 //  ---------------- 여기부터 API 시작 ----------------
 
 // ------------------
-// TASK 1 : 게시글 조회 with GET ('/api/posts')
+// TASK 1 : 게시글 목록 조회 with GET ('/api/posts')
 router.get("/", async (req, res) => {
   // 몽고디비 데이터베이스 상의 'Post'에서 모든 데이터를 createdAt의 내림차순으로 불러온 후,
-  const dataAll = await Post.find().sort({ createdAt: -1 });
+  const dataAll = await Post.findAll({
+    order: [["createdAt", "DESC"]],
+  });
+
   // data 배열에 하나씩 넣어 줍니다. (push)
   const data = [];
 
   for (let i = 0; i < dataAll.length; i++) {
     data.push({
       postId: dataAll[i]._id.toString(), // 이 때 ObjectId 객체로 불러와진 값은 문자열로 바꿉니다.
-      user: dataAll[i].user,
+      nickname: dataAll[i].nickname,
       title: dataAll[i].title,
       createdAt: dataAll[i].createdAt,
     });
@@ -32,18 +35,17 @@ router.get("/", async (req, res) => {
 
 // ------------------
 // TASK 2 : 게시글 작성 with POST ('/api/posts')
-router.post("/", async (req, res) => {
-  // POST 요청의 body로 받은 아이들을 각 변수 user, password, title, content에 넣어줍니다.
+router.post("/", authMiddleware, async (req, res) => {
+  // POST 요청의 body로 받은 아이들을 각 변수 nickname, password, title, content에 넣어줍니다.
 
-  const { user, password, title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
+  const { nickname, password, title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
 
   // 그 변수들을 Post DB에 create - 생성해줍니다.
   await Post.create({
-    user,
+    nickname,
     password,
     title,
     content,
-    createdAt: new Date(), // 오늘 날짜, 시간이 자동 생성돼서 넘어가야 하므로 new Date()를 사용합니다. '지금 날짜+시간'
   });
 
   // 명세서대로 Response를 반환 해줍니다.
@@ -56,7 +58,7 @@ router.get("/:_postId", async (req, res) => {
   // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
   // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
-  const thisPost = await Post.findOne({ _id: _postId });
+  const thisPost = await Post.findOne({ where: { _id: _postId } });
 
   // DB에서 찾아낸 thisPost의 개수가 0개이면, 없다고 response 합니다.
   if (!thisPost) {
@@ -67,7 +69,7 @@ router.get("/:_postId", async (req, res) => {
   const data = [
     {
       postId: thisPost._id.toString(),
-      user: thisPost.user,
+      nickname: thisPost.nickname,
       title: thisPost.title,
       content: thisPost.content,
       createdAt: thisPost.createdAt,
@@ -80,14 +82,14 @@ router.get("/:_postId", async (req, res) => {
 
 // ------------------
 // TASK 4 : 게시글 수정 with PUT ('/api/posts/:_postId')
-router.put("/:_postId", async (req, res) => {
+router.put("/:_postId", authMiddleware, async (req, res) => {
   // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
   // 동시에 수정할 내용을 Request body에 담아 받게 되는데
   const { password, title, content } = req.body;
 
   // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
-  const thisPost = await Post.findOne({ _id: _postId });
+  const thisPost = await Post.findOne({ where: { _id: _postId } });
 
   // 마찬가지로 찾아낸 게 없으면 게시글 수정을 진행할 수 없습니다.
   if (!thisPost) {
@@ -123,14 +125,14 @@ router.put("/:_postId", async (req, res) => {
 
 // ------------------
 // TASK 5 : 게시글 삭제 with DELETE ('/api/posts/:_postId')
-router.delete("/:_postId", async (req, res) => {
+router.delete("/:_postId", authMiddleware, async (req, res) => {
   // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
   // 비교를 위해서 body에 담아 받은 password를 password변수에 그대로 담습니다.
   const { password } = req.body;
 
   // 입력 받은 _postId와 동일한 요소를 DB에서 찾아냅니다.
-  const thisPost = await Post.findOne({ _id: _postId });
+  const thisPost = await Post.findOne({ where: { _id: _postId } });
   // 찾은 게 없으면 실패를 Response 하고,
   if (!thisPost) {
     return res.json({ message: "해당 게시글이 없습니다." });
@@ -145,27 +147,28 @@ router.delete("/:_postId", async (req, res) => {
 
     // 아니면 내용 삭제합니다.
   } else {
-    await Post.deleteOne({
-      _id: _postId,
+    await Post.destroy({
+      where: {
+        _id: _postId,
+      },
     });
     // 여기까지 왔으면 게시글이 삭제되었으므로 삭제하게 됩니다.
     res.json({ message: "게시글을 삭제하였습니다." });
   }
 });
 
-// ----부가기능--------------
-// // 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
-// // 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
-router.post("/many", async (req, res) => {
+// ---------부가기능--------------
+// 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
+// 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
+router.post("/many", authMiddleware, async (req, res) => {
   for (let i = 0; i < req.body.length; i++) {
-    var { user, password, title, content } = req.body[i];
+    var { nickname, password, title, content } = req.body[i];
 
     await Post.create({
-      user,
+      nickname,
       password,
       title,
       content,
-      createdAt: new Date(),
     });
   }
 
