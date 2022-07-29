@@ -8,9 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// mongoDB에 연결
-const connect = require("./schemas/index.js");
-connect();
+// DB 연결
+const connect = require("./models");
 
 // "/api" path로 연결하는 라우터 연결 (우선 routes/index.js로)
 const indexRouter = require("./routes/index.js");
