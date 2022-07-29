@@ -1,2 +1,2 @@
-ALTER TABLE Posts RENAME COLUMN user TO nickname;
+ALTER TABLE Comments RENAME COLUMN id TO _id;
 

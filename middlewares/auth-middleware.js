@@ -18,13 +18,13 @@ const authMiddleware = (req, res, next) => {
     return;
   }
 
-  // 우리 Bearer 토큰을 전달한 게 맞는데 요청한 pathrk 로그인이나 signup이면,
-  if (req.path.includes("/login") || req.path.includes("/signup")) {
-    res.status(401).send({
-      errorMessage: "이미 로그인이 되어 있습니다.",
-    });
-    return;
-  }
+  // // 우리 Bearer 토큰을 전달한 게 맞는데 요청한 pathrk 로그인이나 signup이면,
+  // if (req.path.includes("/login") || req.path.includes("/signup")) {
+  //   res.status(401).send({
+  //     errorMessage: "이미 로그인이 되어 있습니다.",
+  //   });
+  //   return;
+  // }
 
   // 뒤쪽 authToken을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
   try {

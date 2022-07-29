@@ -4,9 +4,13 @@
 // 이 파일에서 사용할 라우터 객체 생성
 const express = require("express");
 const router = express.Router();
+const { Op } = require("sequelize");
 
-// 이 파일에서 사용할 post DB가 어떻게 생겼는지 불러옵니다. (schema/post.js)
-const Post = require("../schemas/post.js");
+// models 폴더 안에 있는  Post DB 모델을 가져다 사용합니다.
+const { Post } = require("../models");
+
+// 각 api 접근할 때마다 사용자 인증을 위한 미들웨어 임포트
+const authMiddleware = require("../middlewares/auth-middleware");
 
 //  ---------------- 여기부터 API 시작 ----------------
 
@@ -24,9 +28,11 @@ router.get("/", async (req, res) => {
   for (let i = 0; i < dataAll.length; i++) {
     data.push({
       postId: dataAll[i]._id.toString(), // 이 때 ObjectId 객체로 불러와진 값은 문자열로 바꿉니다.
+      userId: dataAll[i].userId,
       nickname: dataAll[i].nickname,
       title: dataAll[i].title,
       createdAt: dataAll[i].createdAt,
+      updatedAt: dataAll[i].updatedAt,
     });
   }
 
@@ -36,14 +42,14 @@ router.get("/", async (req, res) => {
 // ------------------
 // TASK 2 : 게시글 작성 with POST ('/api/posts')
 router.post("/", authMiddleware, async (req, res) => {
-  // POST 요청의 body로 받은 아이들을 각 변수 nickname, password, title, content에 넣어줍니다.
-
-  const { nickname, password, title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
+  // POST 요청의 body로 받은 아이들을 각 변수 title, content에 넣어줍니다.
+  // 인증된 user의 정보는 미들웨어를 통해 넘겨받았습니다.
+  const { user } = await res.locals;
+  const { title, content } = req.body; // 변수 4개를 한꺼번에 선언했다.
 
   // 그 변수들을 Post DB에 create - 생성해줍니다.
   await Post.create({
-    nickname,
-    password,
+    nickname: user.nickname,
     title,
     content,
   });
@@ -69,10 +75,12 @@ router.get("/:_postId", async (req, res) => {
   const data = [
     {
       postId: thisPost._id.toString(),
+      userId: thisPost.userId,
       nickname: thisPost.nickname,
       title: thisPost.title,
       content: thisPost.content,
       createdAt: thisPost.createdAt,
+      updatedAt: thisPost.updatedAt,
     },
   ];
 
@@ -86,7 +94,7 @@ router.put("/:_postId", authMiddleware, async (req, res) => {
   // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
   // 동시에 수정할 내용을 Request body에 담아 받게 되는데
-  const { password, title, content } = req.body;
+  const { title, content } = req.body;
 
   // 이 _postId를 id로 가진 DB 요소를 모두 찾아서 thisPost라는 변수에 넣습니다.
   const thisPost = await Post.findOne({ where: { _id: _postId } });
@@ -96,25 +104,19 @@ router.put("/:_postId", authMiddleware, async (req, res) => {
     return res.json({ message: "해당 게시글이 없습니다." });
   }
 
-  // 찾아낸 게 있으면, 찾아둔 thisPost의 password와 입력받은 패스워드를 비교해보고,
-  const db_password = thisPost["password"];
-  if (password != db_password) {
-    console.log(password, db_password);
-    return res.json({ message: "패스워드가 일치하지 않습니다." });
+  // 찾아낸 게 있지만, 로그인 한 유저가 글 작성자가 아니면 수정을 못함
+  // 미들웨어를 거쳐 인증된 사용자 객체 user (사용자 정보를 모두 담고 있음)
+  const { user } = await res.locals;
+  if (user.nickname != thisPost.nickname) {
+    return res.json({ message: "수정 권한이 없습니다." });
   }
 
-  // 비밀번호까지 일치하면 if문을 거치지 않고 여기까지 오는데, 그 Post를 update합니다.
-  await Post.updateOne(
+  // 다 만족하면 if문을 거치지 않고 여기까지 오는데, 그 Post를 update합니다.
+  await Post.update(
+    { title, content }, // 어떤 댓글을 수정할지 넣고,
     {
-      _id: _postId,
-      // updateOne 메소드는 첫번째 인자로 업데이트할 DB의 고유값을 받습니다. (여기선 _id)
-    },
-    {
-      $set: {
-        // 두번째 인자로 $set:{}이라는 명령어와 함꼐 바꿀 내용들을 적어 보냅니다.
-        password: password,
-        title: title,
-        content: content,
+      where: {
+        _id: _postId,
       },
     }
   );
@@ -128,8 +130,6 @@ router.put("/:_postId", authMiddleware, async (req, res) => {
 router.delete("/:_postId", authMiddleware, async (req, res) => {
   // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
   const { _postId } = req.params;
-  // 비교를 위해서 body에 담아 받은 password를 password변수에 그대로 담습니다.
-  const { password } = req.body;
 
   // 입력 받은 _postId와 동일한 요소를 DB에서 찾아냅니다.
   const thisPost = await Post.findOne({ where: { _id: _postId } });
@@ -138,14 +138,11 @@ router.delete("/:_postId", authMiddleware, async (req, res) => {
     return res.json({ message: "해당 게시글이 없습니다." });
   }
 
-  // 아까 찾은 thisPost의 password와
-  const db_password = thisPost["password"];
-
-  // body로 입력받았던 password와 DB에서 찾아낸 password가 일치하지 않으면 요청 종료.
-  if (password != db_password) {
-    res.json({ message: "패스워드가 일치하지 않습니다." });
-
-    // 아니면 내용 삭제합니다.
+  // 로그인 한 유저가 글 작성자가 아니면 수정을 못함
+  // 미들웨어를 거쳐 인증된 사용자 객체 user (사용자 정보를 모두 담고 있음)
+  const { user } = await res.locals;
+  if (user.nickname != thisPost.nickname) {
+    return res.json({ message: "삭제 권한이 없습니다." });
   } else {
     await Post.destroy({
       where: {
@@ -161,12 +158,12 @@ router.delete("/:_postId", authMiddleware, async (req, res) => {
 // 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
 // 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
 router.post("/many", authMiddleware, async (req, res) => {
+  const { user } = await res.locals;
   for (let i = 0; i < req.body.length; i++) {
-    var { nickname, password, title, content } = req.body[i];
+    var { title, content } = req.body[i];
 
     await Post.create({
-      nickname,
-      password,
+      nickname: user.nickname,
       title,
       content,
     });
