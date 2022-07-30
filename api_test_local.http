@@ -29,7 +29,7 @@ Content-Type: application/json
 ### 게시글 작성 셍성 
 POST http://localhost:8000/api/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTY1OTE2MzA2OX0.KoUvQxcqwfs7hqmFVLX2sImM6m4uArg-4i175n6NEWU
 
 {
     "title": "안녕하세요22",
@@ -41,10 +41,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 GET http://localhost:8000/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:8000/api/posts/13
+GET http://localhost:8000/api/posts/15
 
 ### 게시글 수정 
-PUT http://localhost:8000/api/posts/13
+PUT http://localhost:8000/api/posts/15
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
@@ -54,7 +54,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 }
 
 ### 게시글 삭제
-DELETE http://localhost:8000/api/posts/14
+DELETE http://localhost:8000/api/posts/15
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
@@ -62,7 +62,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 #################### Comments ########################
 
 ### 특정 게시글에 댓글 작성   // 사용중인 유저로 진행 필요
-POST http://localhost:8000/api/comments/12
+POST http://localhost:8000/api/comments/15
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
@@ -71,12 +71,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://localhost:8000/api/comments/12
+GET http://localhost:8000/api/comments/15
 
 ### 댓글 수정
-PUT http://localhost:8000/api/comments/10
+PUT http://localhost:8000/api/comments/11
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTY1OTE2MzA2OX0.KoUvQxcqwfs7hqmFVLX2sImM6m4uArg-4i175n6NEWU
 
 { 
     "comment": "안녕하세요 수정된 댓글입니다."
@@ -84,18 +84,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 
 
 ### 댓글 삭제 
-DELETE http://localhost:8000/api/comments/10
+DELETE http://localhost:8000/api/comments/11
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 
 ### 게시글 좋아요
-PUT http://localhost:8000/api/posts/12/like
+PUT http://localhost:8000/api/posts/15/like
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
 
 
-### 좋아한 게시글 리스트
+### 사용자가 좋아한 게시글 리스트
 GET http://localhost:8000/api/posts/like
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
