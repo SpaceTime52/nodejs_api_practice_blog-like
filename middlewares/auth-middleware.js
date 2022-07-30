@@ -1,34 +1,25 @@
-// 이 미들웨어를 거쳐가면 로그인 된 것으로 인증된 것임
-const jwt = require("jsonwebtoken");
+// ------------- 이 미들웨어를 거쳐가면 로그인 된 것으로 인증된 것임
 
+const jwt = require("jsonwebtoken");
 // DB의 유저 모델을 참고하여 인증을 진행함
 const { User } = require("../models");
 
-// 우리가 Export할 미들웨어 시작
+// 우리가 Export할 미들웨어 : authMiddleware
 const authMiddleware = (req, res, next) => {
-  // Client 요청의 header 중 authorization을 읽어들여서,공백을 기준으로 둘로 나눔
-  const { authorization } = req.headers;
-  const [authType, authToken] = (authorization || "").split(" ");
-
-  // 전달받은 인증값이 Bearer가 아니면 반려
-  if (authType !== "Bearer") {
-    res.status(401).send({
-      errorMessage: "로그인 후 사용해주세요",
-    });
-    return;
-  }
-
-  // // 우리 Bearer 토큰을 전달한 게 맞는데 요청한 pathrk 로그인이나 signup이면,
-  // if (req.path.includes("/login") || req.path.includes("/signup")) {
-  //   res.status(401).send({
-  //     errorMessage: "이미 로그인이 되어 있습니다.",
-  //   });
-  //   return;
-  // }
-
-  // 뒤쪽 authToken을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
   try {
-    //
+    // Client 요청의 header 중 authorization을 읽어들여서,공백을 기준으로 둘로 나눔
+    const { authorization } = req.headers;
+    const [authType, authToken] = (authorization || "").split(" ");
+
+    // 전달받은 인증값이 Bearer가 아니면 반려
+    if (authType !== "Bearer") {
+      res.status(401).send({
+        errorMessage: "로그인 후 사용해주세요",
+      });
+      return;
+    }
+
+    // 뒤쪽 authToken을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
     jwt.verify(
       authToken,
       "mySecretKey",
@@ -60,4 +51,5 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+// 미들웨어 사용할 수 있게 export
 module.exports = authMiddleware;
