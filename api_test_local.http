@@ -4,7 +4,7 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester6",  
+    "nickname": "Tester7",  
     "password": "12345",  
     "confirm": "12345"
 }
@@ -85,9 +85,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhd
 GET http://localhost:8000/api/comments/15
 
 ### 댓글 수정
-PUT http://localhost:8000/api/comments/11
+PUT http://localhost:8000/api/comments/12
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTY1OTE2MzA2OX0.KoUvQxcqwfs7hqmFVLX2sImM6m4uArg-4i175n6NEWU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 { 
     "comment": "안녕하세요 수정된 댓글입니다."
