@@ -30,6 +30,46 @@ const postAuthSchema = Joi.object({
 
 // ------------------ --------------------------- ---------------------------
 // TASK 1 : 회원 가입 API with POST  ('/api/signup' POST로 접근 시)
+
+/**
+ * @swagger
+ *  /api/signup:
+ *    post:
+ *      tags:
+ *      - user
+ *      description: 회원가입
+ *      operationId : signup
+ *      parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "Created user object"
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            userId:
+ *              type: string
+ *              example: 'TESTER6'
+ *            password:
+ *              type: string
+ *              example: '1234'
+ *            confirm:
+ *              type: string
+ *              example: '1234'
+ *      responses:
+ *        200:
+ *          description: "회원 가입에 성공하였습니다."
+ *        400-1:
+ *          description: "이미 로그인이 되어있습니다."
+ *        400-2:
+ *          description: "입력하신 두개의 비밀번호가 다릅니다"
+ *        400-3:
+ *          description: "비밀번호는 닉네임을 포함할 수 없습니다. "
+ *        400-4:
+ *          description: "이미 사용중인 닉네임 입니다."
+ *        400-5:
+ *          description: "입력하신 아이디와 패스워드를 확인해주세요."
+ */
 router.post("/signup", async (req, res) => {
   try {
     // joi 객체의 스키마를 잘 통과했는지 확인
@@ -90,6 +130,39 @@ router.post("/signup", async (req, res) => {
 
 // ------------------
 // TASK 2 : 로그인 기능 ('/api/login')
+
+/**
+ * @swagger
+ *  /api/login:
+ *    post:
+ *      tags:
+ *      - user
+ *      description: 회원가입
+ *      operationId : signup
+ *      parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "Created user object"
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            userId:
+ *              type: string
+ *              example: 'TESTER6'
+ *            password:
+ *              type: string
+ *              example: '1234'
+ *      responses:
+ *        200:
+ *          description: 유효 토큰 반환
+ *        400-1:
+ *          description: "이미 로그인이 되어있습니다."
+ *        400-2:
+ *          description: "닉네임 또는 패스워드를 확인해주세요."
+ *        400-3:
+ *          description: "유효한 아이디와 패스워드를 입력해주세요."
+ */
 router.post("/login", async (req, res) => {
   try {
     // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,) 반려
