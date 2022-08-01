@@ -3,3 +3,4 @@ api_test.http
 api_test_local.http
 memo_dev
 QUERY_HISTORY.sql
+.env

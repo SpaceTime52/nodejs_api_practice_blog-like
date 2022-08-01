@@ -4,7 +4,7 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester7",  
+    "nickname": "Tester9",  
     "password": "12345",  
     "confirm": "12345"
 }
@@ -14,22 +14,15 @@ POST http://localhost:8000/api/login
 Content-Type: application/json
 
 {  
-    "nickname": "Tester5",
+    "nickname": "Tester4",
     "password": "12345"
 }
-
-### 받은 토큰 예시 
-### TESTER 1 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTY1OTA3ODMzNn0.vFDvYP2DAIqnRcPD6WyppqXHm72lfgD_PO3-jSV-6Xw
-### TESTER 2 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY1OTA4ODE0M30.H4kbxfRVQNojc0Iiz_Y71j-sxrHOJCT7kcKQz0hT_jo
-### TESTER 3 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTY1OTA4ODY0OX0.q6xr19CUl_WQfy6yBa9aBYFpy6Umx1RHistMVlN_ydU
-### TESTER 4 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTA5MTgxOH0.ncec1VIJSVh6vDGVDsdl3lCoFw7dmSPR_YupAE9yGTg
-### TESTER 5 Token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
 
 
 ### 게시글 작성 셍성 
 POST http://localhost:8000/api/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjcsImlhdCI6MTY1OTE2MzA2OX0.KoUvQxcqwfs7hqmFVLX2sImM6m4uArg-4i175n6NEWU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTM0MDA1Nn0.cN8iieaTcT15nsTqEVDaDUIBBbW06jTihm_FA6mNTSk
 
 {
     "title": "안녕하세요22",
@@ -44,9 +37,9 @@ GET http://localhost:8000/api/posts
 GET http://localhost:8000/api/posts/15
 
 ### 게시글 수정 
-PUT http://localhost:8000/api/posts/15
+PUT http://localhost:8000/api/posts/20
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTY1OTEwNzkzN30.GhUqUcTkokIY2N9gd99VXI1dkon8YZsThg_GocMce_E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTY1OTM0MDE4M30.96soMTn3peha2i7zfmYrzgI6mUBVxMnYEh3jGRWrdhc
 
 { 
     "title": "안녕하세요3",

@@ -1,7 +1,12 @@
 // express 모듈을 불러오고, 보안(CORS),포트 등 환경 초기화
 const express = require("express");
 const cors = require("cors");
-const port = 8000;
+
+// 환경변수 불러오기 (process.env. + 변수 설정)
+const dotenv = require("dotenv");
+dotenv.config();
+
+const port = process.env.PORT;
 
 // express 객체 선언, 각종 middleware 설치
 const app = express();

@@ -3,6 +3,7 @@
 const jwt = require("jsonwebtoken");
 // DB의 유저 모델을 참고하여 인증을 진행함
 const { User } = require("../models");
+const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 
 // 우리가 Export할 미들웨어 : authMiddleware
 const authMiddleware = (req, res, next) => {
@@ -22,7 +23,7 @@ const authMiddleware = (req, res, next) => {
     // 뒤쪽 authToken을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
     jwt.verify(
       authToken,
-      "mySecretKey",
+      MY_SECRET_KEY,
 
       async (error, decoded) => {
         // 인증 결과 에러가 나타나면 클라이언트와 서버에 모두 에러를 던지고 미들웨어 종료

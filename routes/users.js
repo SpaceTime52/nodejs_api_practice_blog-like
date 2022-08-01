@@ -4,7 +4,7 @@
 const express = require("express");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
-const MY_SECRET_KEY = "mySecretKey";
+const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 // const { Op } = require("sequelize");
 
 // 이 파일에서 사용할 라우터 객체 생성
