@@ -1,6 +1,7 @@
 // express 모듈을 불러오고, 보안(CORS),포트 등 환경 초기화
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 // 환경변수 불러오기 (process.env. + 변수 설정)
 const dotenv = require("dotenv");
@@ -11,6 +12,7 @@ const port = process.env.PORT;
 // express 객체 선언, 각종 middleware 설치
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 // DB에 연결 - sync() 사용으로 DB 모델(./models)의 변화를 감지하여 동기화

@@ -36,7 +36,7 @@ const postAuthSchema = Joi.object({
  *  /api/signup:
  *    post:
  *      tags:
- *      - user
+ *      - users
  *      description: 회원가입
  *      operationId : signup
  *      parameters:
@@ -136,13 +136,13 @@ router.post("/signup", async (req, res) => {
  *  /api/login:
  *    post:
  *      tags:
- *      - user
+ *      - users
  *      description: 회원가입
  *      operationId : signup
  *      parameters:
  *      - in: "body"
  *        name: "body"
- *        description: "Created user object"
+ *        description: "Login here"
  *        required: true
  *        schema:
  *          type: object
@@ -166,7 +166,8 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     // 헤더가 인증정보를 가지고 있으면 (로그인 되어 있으면,) 반려
-    if (req.headers.authorization) {
+    console.log(req.cookies);
+    if (req.cookies.token) {
       res.status(400).send({
         errorMessage: "이미 로그인이 되어있습니다.",
       });
@@ -175,7 +176,6 @@ router.post("/login", async (req, res) => {
 
     // joi 객체의 스키마를 잘 통과했는지 확인
     const { nickname, password } = await postAuthSchema.validateAsync(req.body);
-
     // 입력된 정보로 존재하는 사용자 찾아보고
     const user = await User.findOne({ where: { nickname, password } });
 
@@ -187,9 +187,14 @@ router.post("/login", async (req, res) => {
       return;
     }
 
-    // DB에 그런 user가 있으면 토큰을 발행하여 전달
+    // DB에 그런 user가 있으면 토큰을 발행하여 쿠키로 전달
     const token = jwt.sign({ userId: user.userId }, MY_SECRET_KEY);
-    res.status(200).json({ token });
+    res.cookie("token", `Bearer ${token}`, {
+      maxAge: 3600000, // 1시간
+      httpOnly: true,
+    });
+
+    return res.status(200).end();
   } catch (error) {
     const message = `${req.method} ${req.originalUrl} : ${error.message}`;
     console.log(message);
@@ -197,6 +202,12 @@ router.post("/login", async (req, res) => {
       errorMessage: "유효한 아이디와 패스워드를 입력해주세요.",
     });
   }
+});
+
+// Logout 기능 : TBD
+router.post("/logout", async (req, res) => {
+  try {
+  } catch (error) {}
 });
 
 // 이 파일의 router 객체를 외부에 공개합니다.
