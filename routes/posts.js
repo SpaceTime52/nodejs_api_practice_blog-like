@@ -22,7 +22,7 @@ const authMiddleware = require("../middlewares/auth-middleware");
  *  /api/posts:
  *    get:
  *      tags:
- *      - posts
+ *      - Posts
  *      description: 게시글 목록 조회
  *      operationId : getPostList
  *      responses:
@@ -82,7 +82,7 @@ router.get("/", async (req, res) => {
  *  /api/posts:
  *    post:
  *      tags:
- *      - posts
+ *      - Posts
  *      description: 게시글 작성
  *      operationId : post_a_Post
  *      parameters:
@@ -134,7 +134,7 @@ router.post("/", authMiddleware, async (req, res) => {
  *  /api/posts/like:
  *    get:
  *      tags:
- *      - posts
+ *      - Posts
  *      description: 내가 좋아한 포스트 목록 보기
  *      operationId : postsILiked
  *      responses:
@@ -205,7 +205,7 @@ router.get("/like", authMiddleware, async (req, res) => {
  *  /api/posts/{_postId}:
  *    get:
  *      tags:
- *      - posts
+ *      - Posts
  *      description: 게시글 상세조회
  *      operationId : viewPostDetail
  *      parameters:
@@ -219,22 +219,22 @@ router.get("/like", authMiddleware, async (req, res) => {
  *      responses:
  *        200:
  *          schema:
- *           type: object
- *           properties:
- *             postId:
- *               type: string
- *             userId:
- *               type: string
- *             nickname:
- *               type: string
- *             title:
- *               type: string
- *             createdAt:
- *               type: string
- *             updatedAt:
- *               type: string
- *             likes:
- *               type: integer
+ *            type: object
+ *            properties:
+ *              postId:
+ *                type: string
+ *              userId:
+ *                type: string
+ *              nickname:
+ *                type: string
+ *              title:
+ *                type: string
+ *              createdAt:
+ *                type: string
+ *              updatedAt:
+ *                type: string
+ *              likes:
+ *                type: integer
  *        400-1:
  *          description: "해당 게시글이 없습니다."
  */
@@ -277,43 +277,45 @@ router.get("/:_postId", async (req, res) => {
 // TASK 4 : 게시글 수정 with PUT ('/api/posts/:_postId')
 /**
  * @swagger
- *  /api/posts:
- *    post:
+ *  /api/posts/{_postId}:
+ *    put:
  *      tags:
- *      - posts
- *      description: 회원가입
- *      operationId : signup
+ *      - Posts
+ *      description: 게시글 수정
+ *      operationId : editPost
  *      parameters:
  *      - in: "body"
  *        name: "body"
- *        description: "Created user object"
+ *        description: "edit that Post"
  *        required: true
  *        schema:
  *          type: object
  *          properties:
- *            userId:
+ *            title:
  *              type: string
- *              example: 'TESTER6'
- *            password:
+ *              example: '수정할 게시글 제목'
+ *            content:
  *              type: string
- *              example: '1234'
- *            confirm:
- *              type: string
- *              example: '1234'
+ *              example: '이러이러하게 수정을 하고 싶어요!'
+ *      - in: "path"
+ *        name: params
+ *        description: 어떤 포스트를 수정할지 선택할 id
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            _postId:
+ *              type: integer
+ *              example: 6
  *      responses:
  *        200:
- *          description: "회원 가입에 성공하였습니다."
+ *          description: "게시글을 수정하였습니다."
  *        400-1:
- *          description: "이미 로그인이 되어있습니다."
+ *          description: "해당 게시글이 없습니다."
  *        400-2:
- *          description: "입력하신 두개의 비밀번호가 다릅니다"
- *        400-3:
- *          description: "비밀번호는 닉네임을 포함할 수 없습니다. "
- *        400-4:
- *          description: "이미 사용중인 닉네임 입니다."
- *        400-5:
- *          description: "입력하신 아이디와 패스워드를 확인해주세요."
+ *          description: "수정 권한이 없습니다."
  */
+
 router.put("/:_postId", authMiddleware, async (req, res) => {
   try {
     // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -359,42 +361,30 @@ router.put("/:_postId", authMiddleware, async (req, res) => {
 // TASK 5 : 게시글 삭제 with DELETE ('/api/posts/:_postId')
 /**
  * @swagger
- *  /api/posts:
- *    post:
+ *  /api/posts/{_postId}:
+ *    delete:
  *      tags:
- *      - posts
- *      description: 회원가입
- *      operationId : signup
+ *      - Posts
+ *      description: 게시글 삭제
+ *      operationId : deletePost
  *      parameters:
- *      - in: "body"
- *        name: "body"
- *        description: "Created user object"
+ *      - in: "path"
+ *        name: params
+ *        description: 어떤 포스트를 수정할지 선택할 id
  *        required: true
  *        schema:
  *          type: object
  *          properties:
- *            userId:
- *              type: string
- *              example: 'TESTER6'
- *            password:
- *              type: string
- *              example: '1234'
- *            confirm:
- *              type: string
- *              example: '1234'
+ *            _postId:
+ *              type: integer
+ *              example: 6
  *      responses:
  *        200:
- *          description: "회원 가입에 성공하였습니다."
+ *          description: "게시글을 수정하였습니다."
  *        400-1:
- *          description: "이미 로그인이 되어있습니다."
+ *          description: "해당 게시글이 없습니다."
  *        400-2:
- *          description: "입력하신 두개의 비밀번호가 다릅니다"
- *        400-3:
- *          description: "비밀번호는 닉네임을 포함할 수 없습니다. "
- *        400-4:
- *          description: "이미 사용중인 닉네임 입니다."
- *        400-5:
- *          description: "입력하신 아이디와 패스워드를 확인해주세요."
+ *          description: "삭제 권한이 없습니다."
  */
 router.delete("/:_postId", authMiddleware, async (req, res) => {
   try {
@@ -429,110 +419,31 @@ router.delete("/:_postId", authMiddleware, async (req, res) => {
   }
 });
 
-// ---------부가기능--------------
-// 게시글 작성 여러개 한꺼번에 with POST ('/api/posts/many')
-// 명세서에 없는 내용이지만 한번에 여러개 게시글을 작성해놓기 위해서 만들어본 것입니다. 건너 뛰셔도 됩니다.
-/**
- * @swagger
- *  /api/posts:
- *    post:
- *      tags:
- *      - posts
- *      description: 회원가입
- *      operationId : signup
- *      parameters:
- *      - in: "body"
- *        name: "body"
- *        description: "Created user object"
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            userId:
- *              type: string
- *              example: 'TESTER6'
- *            password:
- *              type: string
- *              example: '1234'
- *            confirm:
- *              type: string
- *              example: '1234'
- *      responses:
- *        200:
- *          description: "회원 가입에 성공하였습니다."
- *        400-1:
- *          description: "이미 로그인이 되어있습니다."
- *        400-2:
- *          description: "입력하신 두개의 비밀번호가 다릅니다"
- *        400-3:
- *          description: "비밀번호는 닉네임을 포함할 수 없습니다. "
- *        400-4:
- *          description: "이미 사용중인 닉네임 입니다."
- *        400-5:
- *          description: "입력하신 아이디와 패스워드를 확인해주세요."
- */
-router.post("/many", authMiddleware, async (req, res) => {
-  try {
-    const { user } = await res.locals;
-    for (let i = 0; i < req.body.length; i++) {
-      var { title, content } = req.body[i];
-
-      await Post.create({
-        userId: user.userId,
-        nickname: user.nickname,
-        title,
-        content,
-      });
-    }
-
-    res.json({ message: "게시글을 생성하였습니다." });
-  } catch (error) {
-    const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-    console.log(message);
-    res.status(400).json({ message });
-  }
-});
-
 // ------------------
 // TASK 6 : 게시글 좋아요 누르기 ('/api/posts/:_postId/like)
 /**
  * @swagger
- *  /api/posts:
- *    post:
+ *  /api/posts/{_postId}/like:
+ *    put:
  *      tags:
- *      - posts
- *      description: 회원가입
- *      operationId : signup
+ *      - Posts
+ *      description: 좋아요 or 좋아요 취소
+ *      operationId : likeIt
  *      parameters:
- *      - in: "body"
- *        name: "body"
- *        description: "Created user object"
+ *      - in: "path"
+ *        name: "path"
+ *        description: 좋아요 누를 포스트 id
  *        required: true
  *        schema:
- *          type: object
- *          properties:
- *            userId:
- *              type: string
- *              example: 'TESTER6'
- *            password:
- *              type: string
- *              example: '1234'
- *            confirm:
- *              type: string
- *              example: '1234'
+ *          type: string
+ *          example: '5'
  *      responses:
- *        200:
- *          description: "회원 가입에 성공하였습니다."
+ *        200-1:
+ *          description: "게시글의 좋아요를 등록하였습니다."
+ *        200-2:
+ *          description: "게시글의 좋아요를 취소하였습니다."
  *        400-1:
- *          description: "이미 로그인이 되어있습니다."
- *        400-2:
- *          description: "입력하신 두개의 비밀번호가 다릅니다"
- *        400-3:
- *          description: "비밀번호는 닉네임을 포함할 수 없습니다. "
- *        400-4:
- *          description: "이미 사용중인 닉네임 입니다."
- *        400-5:
- *          description: "입력하신 아이디와 패스워드를 확인해주세요."
+ *          description: "해당 게시글이 없습니다."
  */
 router.put("/:_postId/like", authMiddleware, async (req, res) => {
   try {

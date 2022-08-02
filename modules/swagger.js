@@ -6,7 +6,8 @@ const options = {
     info: {
       title: "Blog API",
       version: "1.0.0",
-      description: "Blog user, comment, post API",
+      description:
+        "API 연습을 위한 블로그 콘텐츠, 댓글 API - 명세는 아래와 같습니다.",
     },
     host: "http://nodeapi.myspaceti.me:8000",
     basePath: "/",

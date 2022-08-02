@@ -16,6 +16,30 @@ const authMiddleware = require("../middlewares/auth-middleware");
 
 // ------------------
 // TASK 1. 댓글 작성 with POST ('/api/comments/_postId')
+/**
+ * @swagger
+ *  /api/comments/{_postId}:
+ *    post:
+ *      tags:
+ *      - Comments
+ *      description: 댓글 작성
+ *      operationId : postAComment
+ *      parameters:
+ *      - in: "path"
+ *        name: _postId
+ *        description: 어느 포스트에 댓글을 작성할지
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '5'
+ *      responses:
+ *        200:
+ *          description: "댓글을 생성하였습니다."
+ *        400-1:
+ *          description: "댓글 내용을 입력해주세요."
+ *        400-2:
+ *          description: "해당 게시글이 없습니다."
+ */
 router.post("/:_postId", authMiddleware, async (req, res) => {
   try {
     // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -58,6 +82,40 @@ router.post("/:_postId", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 2. 댓글 목록 조회 with GET ('/api/comments/_postId')
+/**
+ * @swagger
+ *  /api/comments/{_postId}:
+ *    get:
+ *      tags:
+ *      - Comments
+ *      description: 댓글 목록 조회
+ *      operationId : getCommentsList
+ *      parameters:
+ *      - in: "path"
+ *        name: _postId
+ *        description: 어느 포스트의 댓글을 표시할지
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '5'
+ *      responses:
+ *        200:
+ *          schema:
+ *           type: object
+ *           properties:
+ *             commentId:
+ *               type: string
+ *             userId:
+ *               type: integer
+ *             nickname:
+ *               type: string
+ *             comment:
+ *               type: string
+ *             createdAt:
+ *               type: string
+ *             updatedAt:
+ *               type: string
+ */
 router.get("/:_postId", async (req, res) => {
   try {
     // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -90,6 +148,7 @@ router.get("/:_postId", async (req, res) => {
         nickname: allCommentInfo[i].nickname,
         comment: allCommentInfo[i].comment,
         createdAt: allCommentInfo[i].createdAt,
+        updatedAt: allCommentInfo[i].updatedAt,
       });
     }
 
@@ -104,6 +163,42 @@ router.get("/:_postId", async (req, res) => {
 
 // ------------------
 // TASK 3. 댓글 수정 with PUT ('/api/comments/_commentId')
+/**
+ * @swagger
+ *  /api/comments/{_commentId}:
+ *    put:
+ *      tags:
+ *      - Comments
+ *      description: 댓글 수정
+ *      operationId : editComment
+ *      parameters:
+ *      - in: "path"
+ *        name: _commentId
+ *        description: 어떤 댓글을 수정할지
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '12'
+ *      - in: "body"
+ *        name: comment
+ *        description: 댓글을 어떻게 수정할지
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            comment:
+ *              type: string
+ *              example: '이러이러하게 수정을 하고 싶어요!'
+ *      responses:
+ *        200:
+ *          description: "댓글을 수정하였습니다."
+ *        400-1:
+ *          description: "해당 댓글이 없습니다."
+ *        400-2:
+ *          description: "댓글 내용을 입력해주세요."
+ *        400-3:
+ *          description: "수정 권한이 없습니다."
+ */
 router.put("/:_commentId", authMiddleware, async (req, res) => {
   try {
     // params로 전달 받은 댓글번호 _commentId와
@@ -151,6 +246,30 @@ router.put("/:_commentId", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 4.게시글 삭제 with DELETE ('/api/comments/_commentId')
+/**
+ * @swagger
+ *  /api/comments/{_commentId}:
+ *    delete:
+ *      tags:
+ *      - Comments
+ *      description: 댓글 삭제
+ *      operationId : deleteComment
+ *      parameters:
+ *      - in: "path"
+ *        name: _commentId
+ *        description: 어떤 댓글을 수정할지
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '12'
+ *      responses:
+ *        200:
+ *          description: "댓글을 삭제하였습니다."
+ *        400-1:
+ *          description: "해당 댓글이 없습니다."
+ *        400-2:
+ *          description: "삭제 권한이 없습니다."
+ */
 router.delete("/:_commentId", authMiddleware, async (req, res) => {
   try {
     // params로 전달 받은 댓글번호 _commentId와
@@ -176,39 +295,6 @@ router.delete("/:_commentId", authMiddleware, async (req, res) => {
       // 지웠으니까 여기서 메세지를 Response 합니다.
       return res.json({ message: "댓글을 삭제하였습니다." });
     }
-  } catch (error) {
-    const message = `${req.method} ${req.originalUrl} : ${error.message}`;
-    consoel.log(message);
-    res.status(400).json({ message });
-  }
-});
-
-// ------------------
-// 댓글 작성 with POST many ('/api/comments/_postId/many')
-// 특정 게시글에 벌크로 댓글을 남깁니다. (DB 초기화 위해서 만들어봤어요)
-router.post("/:_postId/many", authMiddleware, async (req, res) => {
-  try {
-    // 미들웨어를 거쳐 인증된 사용자 객체 user: (사용자 정보를 모두 담고 있음)
-    const { user } = await res.locals;
-    const { _postId } = req.params;
-
-    const posts = await Post.findAll({ where: { _id: _postId } });
-    if (!posts.length) {
-      return res.json({ message: "해당 게시글이 없습니다." });
-    }
-
-    for (let i = 0; i < req.body.length; i++) {
-      var { comment } = req.body[i];
-
-      await Comment.create({
-        _postId,
-        userId: user.userId,
-        nickname: user.nickname,
-        comment,
-      });
-    }
-
-    res.json({ message: "댓글을 생성하였습니다." });
   } catch (error) {
     const message = `${req.method} ${req.originalUrl} : ${error.message}`;
     consoel.log(message);

@@ -36,7 +36,7 @@ const postAuthSchema = Joi.object({
  *  /api/signup:
  *    post:
  *      tags:
- *      - users
+ *      - Users
  *      description: 회원가입
  *      operationId : signup
  *      parameters:
@@ -136,7 +136,7 @@ router.post("/signup", async (req, res) => {
  *  /api/login:
  *    post:
  *      tags:
- *      - users
+ *      - Users
  *      description: 회원가입
  *      operationId : signup
  *      parameters:

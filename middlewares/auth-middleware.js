@@ -10,10 +10,7 @@ const authMiddleware = (req, res, next) => {
   try {
     // Client 요청의 header 중 authorization을 읽어들여서,공백을 기준으로 둘로 나눔
     // const { authorization } = req.headers;
-    console.log(req.cookies.token);
-
     const authorization = req.cookies.token;
-    console.log(authorization);
     const [authType, authToken] = (authorization || "").split(" ");
 
     // 전달받은 인증값이 Bearer가 아니면 반려
@@ -58,3 +55,5 @@ const authMiddleware = (req, res, next) => {
 
 // 미들웨어 사용할 수 있게 export
 module.exports = authMiddleware;
+
+010 - 2365 - 3911;
