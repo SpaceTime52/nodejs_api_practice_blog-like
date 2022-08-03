@@ -4,9 +4,9 @@ POST http://localhost:8000/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester9",  
+    "nickname": "Tester10",  
     "password": "12345",  
-    "confirm": "12345"
+    "confirm": "1235"
 }
     
 ### 로그인
@@ -33,10 +33,10 @@ Content-Type: application/json
 GET http://localhost:8000/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:8000/api/posts/15
+GET http://localhost:8000/api/posts/24
 
 ### 게시글 수정 
-PUT http://localhost:8000/api/posts/22
+PUT http://localhost:8000/api/posts/15
 Content-Type: application/json
 
 { 
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 
 ### 게시글 좋아요
-PUT http://localhost:8000/api/posts/21/like
+PUT http://localhost:8000/api/posts/24/like
 Content-Type: application/json
 
 

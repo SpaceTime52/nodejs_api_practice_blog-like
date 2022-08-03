@@ -18,6 +18,6 @@
 | 좋아요 게시글 조회 | /api/posts/like         | GET    | -                                                                                       | { "data": [ { "postId": 4, "userId": 1, "nickname": "Developer", "title": "안녕하세요 4번째 게시글 제목입니다.", "createdAt": "2022-07-25T07:58:39.000Z", "updatedAt": "2022-07-25T07:58:39.000Z", "likes": 1 } ]}                                                                                                                                                                                                |
 | 게시글 좋아요      | /api/posts/:postId/like | PUT    | -                                                                                       | { "message": "게시글의 좋아요를 등록하였습니다."},{ "message": "게시글의 좋아요를 취소하였습니다."}                                                                                                                                                                                                                                                                                                               |
 
-
 ## ERD : Entity Relationship Diagram
-![image](https://user-images.githubusercontent.com/49124248/181908641-6efe0ad2-049a-4aae-9a4b-31a225662482.png)
+
+![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/08c62cea-a311-4ef0-9579-5e2fe16def2c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220803%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220803T054448Z&X-Amz-Expires=86400&X-Amz-Signature=18267176443708b36de71cbd0def7f27fb1526f5c708e5a014119331b2fa673a&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
