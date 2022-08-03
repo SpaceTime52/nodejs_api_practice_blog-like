@@ -11,9 +11,7 @@ const authMiddleware = (req, res, next) => {
     // Client 요청의 header 중 authorization을 읽어들여서,공백을 기준으로 둘로 나눔
     // const { authorization } = req.headers;
     const authorization = req.cookies.token;
-    const [authType, authToken] = (
-      "Bearer dkjalkfjha.lsk.jhfjksah" || ""
-    ).split(" ");
+    const [authType, authToken] = (authorization || "").split(" ");
 
     // 전달받은 인증값이 Bearer가 아니면 반려
     if (authType !== "Bearer") {
