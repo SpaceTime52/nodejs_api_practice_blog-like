@@ -5,6 +5,7 @@ const express = require("express");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
 const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
+const { swaggerUi, specs } = require("../modules/swagger.js");
 // const { Op } = require("sequelize");
 
 // 이 파일에서 사용할 라우터 객체 생성
@@ -209,6 +210,9 @@ router.post("/logout", async (req, res) => {
   try {
   } catch (error) {}
 });
+
+// /api 주소에 곧장 swagger 적용
+router.use("/", swaggerUi.serve, swaggerUi.setup(specs));
 
 // 이 파일의 router 객체를 외부에 공개합니다.
 module.exports = router;

@@ -26,10 +26,6 @@ sequelize
     console.error(err);
   });
 
-// /api 주소에 곧장 swagger 적용
-const { swaggerUi, specs } = require("./modules/swagger.js");
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(specs));
-
 // queryInterface: 이 주석은 데이터베이스의 테이블이나 컬럼을 생성하고 이름을 바꾸는 등의 쿼리문을 만드는 데 활용한다.
 // const queryInterface = sequelize.getQueryInterface();
 // queryInterface.dropTable("Tests");

@@ -5,14 +5,15 @@ const express = require("express");
 const router = express.Router();
 
 // '/api/posts' '/api/comments'로 들어오는 건 아래 두 파일 (comments.js, posts.js)에서 처리하겠다는 내용
-const usersRouter = require("./users.js");
-router.use("/", [usersRouter]);
 
 const postsRouter = require("./posts.js");
 router.use("/posts", [postsRouter]);
 
 const commentsRouter = require("./comments.js");
 router.use("/comments", [commentsRouter]);
+
+const usersRouter = require("./users.js");
+router.use("/", [usersRouter]);
 
 // 13~29번째 라인은 - '/api' 메인 페이지를 README.md로 연결하기 위한 작업이니 무시하셔도 됩니다.
 const fs = require("fs");
