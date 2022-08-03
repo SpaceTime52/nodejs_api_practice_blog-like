@@ -15,23 +15,5 @@ router.use("/comments", [commentsRouter]);
 const usersRouter = require("./users.js");
 router.use("/", [usersRouter]);
 
-// 13~29번째 라인은 - '/api' 메인 페이지를 README.md로 연결하기 위한 작업이니 무시하셔도 됩니다.
-const fs = require("fs");
-const marked = require("marked");
-marked.use({
-  pedantic: false,
-  gfm: true,
-  breaks: true,
-  smartLists: true,
-  smartypants: false,
-  xhtml: true,
-});
-
-router.get("/", async (req, res) => {
-  var path = __dirname + "/../README.md";
-  var file = fs.readFileSync(path, "utf8");
-  res.send(marked.parse(file.toString()));
-});
-
 // 이 파일에서 만든 router 객체를 외부에 공개 -> app.js에서 사용할 수 있도록
 module.exports = router;
