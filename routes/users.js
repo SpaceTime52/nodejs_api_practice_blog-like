@@ -1,6 +1,6 @@
 // app.js -> index.js의 Router를 통해 들어온 이파일은,
 
-// 이 파일에 필요한 외부 모듈 import
+// 이 파일에 필요한 각종 외부 모듈 import
 const express = require("express");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
@@ -16,8 +16,10 @@ const { User } = require("../models");
 // 특히 User 정보는, Joi라는 모듈을 활용하여 validataion 처리합니다.
 // 회원가입할 떄 user 정보에 대한 joi 객체
 const postUsersSchema = Joi.object({
-  nickname: Joi.string().min(3).max(30).alphanum().required(), // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
-  password: Joi.string().min(4).max(30).alphanum().required(), // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
+  nickname: Joi.string().min(3).max(30).alphanum().required(),
+  // 최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)
+  password: Joi.string().min(4).max(30).alphanum().required(),
+  // 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패 (API에서 검토)
   confirm: Joi.string().min(4).max(30).alphanum().required(),
 });
 // 로그인 할 떄 user 입력된 정보에 대한 joi 객체
@@ -122,7 +124,7 @@ router.post("/login", async (req, res) => {
     console.log(token);
 
     res.cookie("token", `Bearer ${token}`, {
-      maxAge: 3600000, // 1시간
+      maxAge: 30000, // 원활한 테스트를 위해 로그인 지속시간을 30초로 두었다.
       httpOnly: true,
     });
 
@@ -139,7 +141,14 @@ router.post("/login", async (req, res) => {
 // Logout 기능 : TBD 아직 못만들었어요
 router.post("/logout", async (req, res) => {
   try {
-  } catch (error) {}
+    console.log("/logout 기능을 개발 예정입니다.");
+  } catch (error) {
+    const message = `${req.method} ${req.originalUrl} : ${error.message}`;
+    console.log(message);
+    res.status(400).send({
+      errorMessage: message,
+    });
+  }
 });
 
 // '/api' 주소에 곧장 swagger 적용

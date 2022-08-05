@@ -3,11 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-// 환경변수 불러오기 (process.env. + 변수 설정)
+// 환경변수 모듈 불러오기 (process.env. + 변수 설정) -> process.env. 객체 사용 가능
 const dotenv = require("dotenv");
 dotenv.config();
-
-const port = process.env.PORT;
 
 // express 객체 선언, 각종 middleware 설치
 const app = express();
@@ -33,6 +31,9 @@ sequelize
 // "/api" path로 연결하는 라우터 연결 (우선 routes/index.js로)
 const indexRouter = require("./routes/index.js");
 app.use("/api", [indexRouter]);
+
+// process.env. 환경변수 객체에서 본 서버의 port 번호 불러옴
+const port = process.env.PORT;
 
 // 포트 열어서 Request Listening..
 app.listen(port, () => {

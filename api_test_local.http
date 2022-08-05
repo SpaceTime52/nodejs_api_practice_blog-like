@@ -1,26 +1,31 @@
 
 ### 회원가입
-POST http://localhost:8000/api/signup
+POST http://localhost:8001/api/signup
 Content-Type: application/json
 
 {  
-    "nickname": "Tester10",  
+    "nickname": "Tester1",  
     "password": "12345",  
-    "confirm": "1235"
+    "confirm": "12345"
 }
     
 ### 로그인
-POST http://localhost:8000/api/login
+POST http://localhost:8001/api/login
 Content-Type: application/json
 
 {  
-    "nickname": "Tester4",
+    "nickname": "Tester1",
     "password": "12345"
 }
 
 
+### 로그아웃
+POST http://localhost:8001/api/logout
+Content-Type: application/json
+
+
 ### 게시글 작성 셍성 
-POST http://localhost:8000/api/posts
+POST http://localhost:8001/api/posts
 Content-Type: application/json
 
 {
@@ -30,13 +35,13 @@ Content-Type: application/json
     
     
 ### 게시글 모두 조회 불러오는 (주소창)
-GET http://localhost:8000/api/posts
+GET http://localhost:8001/api/posts
 
 ### 특정 게시글 상세 조회
-GET http://localhost:8000/api/posts/24
+GET http://localhost:8001/api/posts/24
 
 ### 게시글 수정 
-PUT http://localhost:8000/api/posts/15
+PUT http://localhost:8001/api/posts/15
 Content-Type: application/json
 
 { 
@@ -45,26 +50,27 @@ Content-Type: application/json
 }
 
 ### 게시글 삭제
-DELETE http://localhost:8000/api/posts/21
+DELETE http://localhost:8001/api/posts/21
 Content-Type: application/json
 
 
+
+#################### Like! ########################
 
 ### 게시글 좋아요
-PUT http://localhost:8000/api/posts/24/like
+PUT http://localhost:8001/api/posts/24/like
 Content-Type: application/json
-
 
 
 ### 사용자가 좋아한 게시글 리스트
-GET http://localhost:8000/api/posts/like
+GET http://localhost:8001/api/posts/like
 Content-Type: application/json
 
 
 #################### Comments ########################
 
 ### 특정 게시글에 댓글 작성   // 사용중인 유저로 진행 필요
-POST http://localhost:8000/api/comments/21
+POST http://localhost:8001/api/comments/21
 Content-Type: application/json
 
 {
@@ -72,10 +78,12 @@ Content-Type: application/json
 }
     
 ### 특정 게시글의 댓글 조회
-GET http://localhost:8000/api/comments/21
+GET http://localhost:8001/api/comments/21
+
+
 
 ### 댓글 수정
-PUT http://localhost:8000/api/comments/16
+PUT http://localhost:8001/api/comments/16
 Content-Type: application/json
 
 { 
@@ -84,5 +92,5 @@ Content-Type: application/json
 
 
 ### 댓글 삭제 
-DELETE http://localhost:8000/api/comments/16
+DELETE http://localhost:8001/api/comments/16
 Content-Type: application/json
