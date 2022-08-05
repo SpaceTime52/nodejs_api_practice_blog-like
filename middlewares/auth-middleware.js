@@ -8,12 +8,11 @@ const MY_SECRET_KEY = process.env.MY_SECRET_KEY;
 // 우리가 Export할 미들웨어 : authMiddleware
 const authMiddleware = (req, res, next) => {
   try {
-    // Client 요청의 header 중 authorization을 읽어들여서,공백을 기준으로 둘로 나눔
-    // const { authorization } = req.headers;
+    // Client 요청의 cookies 객체 중 토큰을 authorization으로 읽어들여서, 공백을 기준으로 두 조각으로 나눔
     const authorization = req.cookies.token;
     const [authType, authToken] = (authorization || "").split(" ");
 
-    // 전달받은 인증값이 Bearer가 아니면 반려
+    // 전달받은 인증값이 Bearer로 시작하지 않으면 인증 실패
     if (authType !== "Bearer") {
       res.status(401).send({
         errorMessage: "로그인 후 사용해주세요",
@@ -21,7 +20,7 @@ const authMiddleware = (req, res, next) => {
       return;
     }
 
-    // 뒤쪽 authToken을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
+    // 뒤쪽 'authToken'을 우리 secretKey를 가지고 인증해보고 에러 없으면, user 정보를 토근으로 다음 next으로 넘겨줌
     jwt.verify(
       authToken,
       MY_SECRET_KEY,

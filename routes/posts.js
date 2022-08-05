@@ -14,37 +14,8 @@ const { User } = require("../models");
 const authMiddleware = require("../middlewares/auth-middleware");
 
 //  ---------------- 여기부터 API 시작 ----------------
-
 // ------------------
 // TASK 1 : 게시글 목록 조회 with GET ('/api/posts')
-/**
- * @swagger
- *  /api/posts:
- *    get:
- *      tags:
- *      - Posts
- *      description: 게시글 목록 조회
- *      operationId : getPostList
- *      responses:
- *        200:
- *          schema:
- *           type: object
- *           properties:
- *             postId:
- *               type: string
- *             userId:
- *               type: string
- *             nickname:
- *               type: string
- *             title:
- *               type: string
- *             createdAt:
- *               type: string
- *             updatedAt:
- *               type: string
- *             likes:
- *               type: integer
- */
 router.get("/", async (req, res) => {
   try {
     // 몽고디비 데이터베이스 상의 'Post'에서 모든 데이터를 createdAt의 내림차순으로 불러온 후,
@@ -77,32 +48,6 @@ router.get("/", async (req, res) => {
 
 // ------------------
 // TASK 2 : 게시글 작성 with POST ('/api/posts')
-/**
- * @swagger
- *  /api/posts:
- *    post:
- *      tags:
- *      - Posts
- *      description: 게시글 작성
- *      operationId : post_a_Post
- *      parameters:
- *      - in: "body"
- *        name: "body"
- *        description: "Create a Blog Post"
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            title:
- *              type: string
- *              example: '게시글 제목'
- *            content:
- *              type: string
- *              example: '안녕하세요, 이런저런 이야기를 쓰고 있습니다.'
- *      responses:
- *        200:
- *          description: "게시글을 생성하였습니다."
- */
 router.post("/", authMiddleware, async (req, res) => {
   try {
     // POST 요청의 body로 받은 아이들을 각 변수 title, content에 넣어줍니다.
@@ -129,34 +74,6 @@ router.post("/", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 7 : 내가 좋아한 게시글 조회 ('/api/posts/like)
-/**
- * @swagger
- *  /api/posts/like:
- *    get:
- *      tags:
- *      - Posts
- *      description: 내가 좋아한 포스트 목록 보기
- *      operationId : postsILiked
- *      responses:
- *        200:
- *          schema:
- *           type: object
- *           properties:
- *             postId:
- *               type: string
- *             userId:
- *               type: string
- *             nickname:
- *               type: string
- *             title:
- *               type: string
- *             createdAt:
- *               type: string
- *             updatedAt:
- *               type: string
- *             likes:
- *               type: integer
- */
 router.get("/like", authMiddleware, async (req, res) => {
   try {
     // 변수 정의, 지금까지 user가 좋아한 Posts
@@ -200,44 +117,6 @@ router.get("/like", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 3 : 게시글 상세조회 with GET ('/api/posts/:_postId')
-/**
- * @swagger
- *  /api/posts/{_postId}:
- *    get:
- *      tags:
- *      - Posts
- *      description: 게시글 상세조회
- *      operationId : viewPostDetail
- *      parameters:
- *      - in: "path"
- *        name: _postId
- *        description: 게시글 ID
- *        required: true
- *        schema:
- *          type: string
- *          example: '5'
- *      responses:
- *        200:
- *          schema:
- *            type: object
- *            properties:
- *              postId:
- *                type: string
- *              userId:
- *                type: string
- *              nickname:
- *                type: string
- *              title:
- *                type: string
- *              createdAt:
- *                type: string
- *              updatedAt:
- *                type: string
- *              likes:
- *                type: integer
- *        400-1:
- *          description: "해당 게시글이 없습니다."
- */
 router.get("/:_postId", async (req, res) => {
   try {
     // URL 뒤쪽에 params{ 로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -275,47 +154,6 @@ router.get("/:_postId", async (req, res) => {
 
 // ------------------
 // TASK 4 : 게시글 수정 with PUT ('/api/posts/:_postId')
-/**
- * @swagger
- *  /api/posts/{_postId}:
- *    put:
- *      tags:
- *      - Posts
- *      description: 게시글 수정
- *      operationId : editPost
- *      parameters:
- *      - in: "body"
- *        name: "body"
- *        description: "edit that Post"
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            title:
- *              type: string
- *              example: '수정할 게시글 제목'
- *            content:
- *              type: string
- *              example: '이러이러하게 수정을 하고 싶어요!'
- *      - in: "path"
- *        name: params
- *        description: 어떤 포스트를 수정할지 선택할 id
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            _postId:
- *              type: integer
- *              example: 6
- *      responses:
- *        200:
- *          description: "게시글을 수정하였습니다."
- *        400-1:
- *          description: "해당 게시글이 없습니다."
- *        400-2:
- *          description: "수정 권한이 없습니다."
- */
-
 router.put("/:_postId", authMiddleware, async (req, res) => {
   try {
     // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -359,33 +197,6 @@ router.put("/:_postId", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 5 : 게시글 삭제 with DELETE ('/api/posts/:_postId')
-/**
- * @swagger
- *  /api/posts/{_postId}:
- *    delete:
- *      tags:
- *      - Posts
- *      description: 게시글 삭제
- *      operationId : deletePost
- *      parameters:
- *      - in: "path"
- *        name: params
- *        description: 어떤 포스트를 수정할지 선택할 id
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *            _postId:
- *              type: integer
- *              example: 6
- *      responses:
- *        200:
- *          description: "게시글을 수정하였습니다."
- *        400-1:
- *          description: "해당 게시글이 없습니다."
- *        400-2:
- *          description: "삭제 권한이 없습니다."
- */
 router.delete("/:_postId", authMiddleware, async (req, res) => {
   try {
     // URL 뒤쪽에 params로 전달받은 _postId를 사용하겠다고 변수 선언합니다.
@@ -421,30 +232,6 @@ router.delete("/:_postId", authMiddleware, async (req, res) => {
 
 // ------------------
 // TASK 6 : 게시글 좋아요 누르기 ('/api/posts/:_postId/like)
-/**
- * @swagger
- *  /api/posts/{_postId}/like:
- *    put:
- *      tags:
- *      - Posts
- *      description: 좋아요 or 좋아요 취소
- *      operationId : likeIt
- *      parameters:
- *      - in: "path"
- *        name: "path"
- *        description: 좋아요 누를 포스트 id
- *        required: true
- *        schema:
- *          type: string
- *          example: '5'
- *      responses:
- *        200-1:
- *          description: "게시글의 좋아요를 등록하였습니다."
- *        200-2:
- *          description: "게시글의 좋아요를 취소하였습니다."
- *        400-1:
- *          description: "해당 게시글이 없습니다."
- */
 router.put("/:_postId/like", authMiddleware, async (req, res) => {
   try {
     // 변수 정의
@@ -519,3 +306,221 @@ router.put("/:_postId/like", authMiddleware, async (req, res) => {
 
 // 이 파일의 router 객체를 외부에 공개합니다.
 module.exports = router;
+
+/**
+ * @swagger
+ *  /api/posts:
+ *    get:
+ *      tags:
+ *      - Posts
+ *      description: 게시글 목록 조회
+ *      operationId : getPostList
+ *      responses:
+ *        200:
+ *          schema:
+ *           type: object
+ *           properties:
+ *             postId:
+ *               type: string
+ *             userId:
+ *               type: string
+ *             nickname:
+ *               type: string
+ *             title:
+ *               type: string
+ *             createdAt:
+ *               type: string
+ *             updatedAt:
+ *               type: string
+ *             likes:
+ *               type: integer
+ */
+
+/**
+ * @swagger
+ *  /api/posts:
+ *    post:
+ *      tags:
+ *      - Posts
+ *      description: 게시글 작성
+ *      operationId : post_a_Post
+ *      parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "Create a Blog Post"
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            title:
+ *              type: string
+ *              example: '게시글 제목'
+ *            content:
+ *              type: string
+ *              example: '안녕하세요, 이런저런 이야기를 쓰고 있습니다.'
+ *      responses:
+ *        200:
+ *          description: "게시글을 생성하였습니다."
+ */
+
+/**
+ * @swagger
+ *  /api/posts/like:
+ *    get:
+ *      tags:
+ *      - Posts
+ *      description: 내가 좋아한 포스트 목록 보기
+ *      operationId : postsILiked
+ *      responses:
+ *        200:
+ *          schema:
+ *           type: object
+ *           properties:
+ *             postId:
+ *               type: string
+ *             userId:
+ *               type: string
+ *             nickname:
+ *               type: string
+ *             title:
+ *               type: string
+ *             createdAt:
+ *               type: string
+ *             updatedAt:
+ *               type: string
+ *             likes:
+ *               type: integer
+ */
+
+/**
+ * @swagger
+ *  /api/posts/{_postId}:
+ *    get:
+ *      tags:
+ *      - Posts
+ *      description: 게시글 상세조회
+ *      operationId : viewPostDetail
+ *      parameters:
+ *      - in: "path"
+ *        name: _postId
+ *        description: 게시글 ID
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '5'
+ *      responses:
+ *        200:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              postId:
+ *                type: string
+ *              userId:
+ *                type: string
+ *              nickname:
+ *                type: string
+ *              title:
+ *                type: string
+ *              createdAt:
+ *                type: string
+ *              updatedAt:
+ *                type: string
+ *              likes:
+ *                type: integer
+ *        400-1:
+ *          description: "해당 게시글이 없습니다."
+ */
+
+/**
+ * @swagger
+ *  /api/posts/{_postId}:
+ *    put:
+ *      tags:
+ *      - Posts
+ *      description: 게시글 수정
+ *      operationId : editPost
+ *      parameters:
+ *      - in: "body"
+ *        name: "body"
+ *        description: "edit that Post"
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            title:
+ *              type: string
+ *              example: '수정할 게시글 제목'
+ *            content:
+ *              type: string
+ *              example: '이러이러하게 수정을 하고 싶어요!'
+ *      - in: "path"
+ *        name: params
+ *        description: 어떤 포스트를 수정할지 선택할 id
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            _postId:
+ *              type: integer
+ *              example: 6
+ *      responses:
+ *        200:
+ *          description: "게시글을 수정하였습니다."
+ *        400-1:
+ *          description: "해당 게시글이 없습니다."
+ *        400-2:
+ *          description: "수정 권한이 없습니다."
+ */
+
+/**
+ * @swagger
+ *  /api/posts/{_postId}:
+ *    delete:
+ *      tags:
+ *      - Posts
+ *      description: 게시글 삭제
+ *      operationId : deletePost
+ *      parameters:
+ *      - in: "path"
+ *        name: params
+ *        description: 어떤 포스트를 수정할지 선택할 id
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *            _postId:
+ *              type: integer
+ *              example: 6
+ *      responses:
+ *        200:
+ *          description: "게시글을 수정하였습니다."
+ *        400-1:
+ *          description: "해당 게시글이 없습니다."
+ *        400-2:
+ *          description: "삭제 권한이 없습니다."
+ */
+
+/**
+ * @swagger
+ *  /api/posts/{_postId}/like:
+ *    put:
+ *      tags:
+ *      - Posts
+ *      description: 좋아요 or 좋아요 취소
+ *      operationId : likeIt
+ *      parameters:
+ *      - in: "path"
+ *        name: "path"
+ *        description: 좋아요 누를 포스트 id
+ *        required: true
+ *        schema:
+ *          type: string
+ *          example: '5'
+ *      responses:
+ *        200-1:
+ *          description: "게시글의 좋아요를 등록하였습니다."
+ *        200-2:
+ *          description: "게시글의 좋아요를 취소하였습니다."
+ *        400-1:
+ *          description: "해당 게시글이 없습니다."
+ */

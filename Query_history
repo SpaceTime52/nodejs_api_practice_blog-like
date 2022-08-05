@@ -1,2 +1,0 @@
-ALTER TABLE Comments RENAME COLUMN id TO _id;
-
