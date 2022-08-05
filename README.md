@@ -21,3 +21,17 @@
 ## ERD : Entity Relationship Diagram
 
 ![image](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/08c62cea-a311-4ef0-9579-5e2fe16def2c/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20220805%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20220805T010127Z&X-Amz-Expires=86400&X-Amz-Signature=a98404c2aaf18bb4ddfedc2ef0ed5b15e648fb3f3129635bff494db538294cfc&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
+
+
+##  별도 mySQL에 연결해서 테스트해야 하는 경우, npm install 이후 아래를 추가로 실행해야 합니다. 
+
+``` bash
+// 터미널에서 
+npx sequelize db:create
+npx sequelize db:migragte
+```
+
+``` SQL
+// SQL 실행기에서 
+ALTER TABLE Users ALTER likedPosts SET DEFAULT (JSON_ARRAY());
+```
